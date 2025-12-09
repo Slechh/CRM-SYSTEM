@@ -16,7 +16,9 @@ body{
 :root {
     --bg-app: #F4F9FD;
     --bg-block: #FFFFFF;
+    --bg-nav-block: #3F8CFF;
     --user-text: #0A1629;
+    --nav-text: #7D8592;
 }
 
 input[type="search"]::-webkit-search-cancel-button {
