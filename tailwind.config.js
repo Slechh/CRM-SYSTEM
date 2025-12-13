@@ -6,13 +6,15 @@ export default {
       fontFamily: {
         sans: ["Nunito Sans", "sans-serif"],
       },
-      colors:{
+      colors: {
         bgApp: "var(--bg-app)",
         bgBlock: "var(--bg-block)",
         bgNavBlock: "var(--bg-nav-block)",
         userText: "var(--user-text)",
         navText: "var(--nav-text)",
-      }
+        cardText: "var(--card-text)",
+        switcherText: "var(--switcher-text)",
+      },
     },
   },
   plugins: [],

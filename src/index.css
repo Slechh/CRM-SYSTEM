@@ -9,16 +9,18 @@
   }
 }
 
-body{
-    background-color: var(--bg-app);
+body {
+  background-color: var(--bg-app);
 }
 
 :root {
-    --bg-app: #F4F9FD;
-    --bg-block: #FFFFFF;
-    --bg-nav-block: #3F8CFF;
-    --user-text: #0A1629;
-    --nav-text: #7D8592;
+  --bg-app: #f4f9fd;
+  --bg-block: #ffffff;
+  --bg-nav-block: #3f8cff;
+  --user-text: #0a1629;
+  --nav-text: #7d8592;
+  --card-text: #91929e;
+  --switcher-text: #c9ccd1;
 }
 
 input[type="search"]::-webkit-search-cancel-button {
