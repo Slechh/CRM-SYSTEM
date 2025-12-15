@@ -5,14 +5,32 @@ import { EmployeesSwitcher } from "./EmployeesSwitcher";
 
 export function EmployeesList({ users }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
-  const employeeListLength = users.length;
-  const totalPages = Math.ceil(users.length / itemsPerPage);
-  const employeeLastIndex = currentPage * itemsPerPage;
-  const employeeStartIndex = employeeLastIndex - itemsPerPage;
-  const employeeList = users.slice(employeeStartIndex, employeeLastIndex);
-  const result = employeeLastIndex - users.length;
+  const [filter, setFilter] = useState("");
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(filter.toLowerCase())
+  );
+  console.log(filter == false);
 
+  const handleSearch = (searchValue) => {
+    setFilter(searchValue);
+    setCurrentPage(1);
+  };
+
+  const itemsPerPage = 6;
+  const usersToRender = filter ? filteredUsers : users;
+  const employeeListLength = usersToRender.length;
+  const totalPages = Math.ceil(usersToRender.length / itemsPerPage);
+  const employeeLastIndex = Math.min(
+    currentPage * itemsPerPage,
+    usersToRender.length
+  );
+  const employeeStartIndex = (currentPage - 1) * itemsPerPage;
+
+  const employeeList = usersToRender.slice(
+    employeeStartIndex,
+    employeeLastIndex
+  );
+  const result = employeeLastIndex - users.length;
   const isLeftButtonDisabled = currentPage === 1;
   const isRightButtonDisabled = currentPage === totalPages;
 
@@ -29,14 +47,20 @@ export function EmployeesList({ users }) {
   console.log(totalPages);
   return (
     <div className="mt-5 flex flex-col">
-      <EmployeesSearchForm />
-      <ul className="flex flex-col gap-y-5 overflow-hidden mt-5 min-h-[616px]">
-        {employeeList.map((user, index) => (
-          <li className="w-full" key={index}>
-            <EmployeeCard user={user} />
-          </li>
-        ))}
-      </ul>
+      <EmployeesSearchForm onSearch={handleSearch} />
+      {usersToRender.length > 0 ? (
+        <ul className="flex flex-col gap-y-5 overflow-hidden mt-5 min-h-[616px]">
+          {employeeList.map((user, index) => (
+            <li className="w-full" key={index}>
+              <EmployeeCard user={user} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="flex justify-center items-center min-h-[616px]">
+          No employee found
+        </div>
+      )}
       <EmployeesSwitcher
         employeeStartIndex={employeeStartIndex}
         employeeLastIndex={employeeLastIndex}
