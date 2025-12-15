@@ -1,6 +1,6 @@
 export const users = [
   {
-    name: "Dima",
+    name: "Dima Kazarov",
     email: "dima@gmail.com",
     gender: "male",
     birthday: "16.11.2006",
