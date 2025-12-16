@@ -17,10 +17,12 @@ body {
   --bg-app: #f4f9fd;
   --bg-block: #ffffff;
   --bg-nav-block: #3f8cff;
+  --bg-modal: #d2defe;
   --user-text: #0a1629;
   --nav-text: #7d8592;
   --card-text: #91929e;
-  --switcher-text: #c9ccd1;
+  --switcher-text: #9ccd1;
+  --form-border: #d8e0f0;
 }
 
 input[type="search"]::-webkit-search-cancel-button {

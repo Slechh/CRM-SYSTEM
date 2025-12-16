@@ -1,11 +1,12 @@
 import { EmployeesHeader } from "../components/employees/EmployeesHeader";
 import { EmployeesList } from "../components/employees/EmployeesList";
-import { users } from "../constants/users";
-
+import { useExperts } from "../hooks/useExperts";
 export function EmployeesPage({ className }) {
+  const { users, loading, error, handleUpdateList } = useExperts();
+
   return (
     <div className={className}>
-      <EmployeesHeader />
+      <EmployeesHeader users={users} handleUpdateList={handleUpdateList} />
       <EmployeesList users={users} />
     </div>
   );
