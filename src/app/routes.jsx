@@ -12,7 +12,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      { index: true, element: <Navigate to="/dashboard" /> },
+      { index: true, element: <Navigate to="/signin" /> },
       { path: "dashboard", element: <DashboardPage /> },
       { path: "employees", element: <EmployeesPage className="mt-6 pb-5" /> },
     ],

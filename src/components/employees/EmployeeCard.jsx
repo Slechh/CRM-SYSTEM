@@ -7,31 +7,33 @@ export function EmployeeCard({ user }) {
     >
       <div className="flex gap-4">
         <img src="/images/photo.png" alt="" className="w-12 h-12" />
-        <div className="flex flex-col justify-center">
-          <span>{user.name}</span>
-          <span>{user.email}</span>
+        <div className="flex flex-col justify-center gap-1">
+          <span className="font-bold text-cardText">First Name</span>
+          <span className="text-sm font-bold">{user.firstName}</span>
         </div>
       </div>
       <div className="flex flex-col gap-1">
-        <h2 className="text-sm text-cardText">Gender</h2>
-        <span>{user.gender}</span>
+        <span className="font-bold text-cardText">Last Name</span>
+        <span className="text-sm font-bold">{user.lastName}</span>
       </div>
       <div className="flex flex-col gap-1">
-        <h2 className="text-sm text-cardText">Birthday</h2>
-        <span>{user.birthday}</span>
-      </div>
-      <div className="flex flex-col gap-1">
-        <h2 className="text-sm text-cardText">Full age</h2>
-        <span>{user.age}</span>
+        <span className="font-bold text-cardText">Interviewed</span>
+        <span className="text-sm font-bold">
+          {user.interviewed ? "Yes" : "No"}
+        </span>
       </div>
       <div className="flex flex-col gap-1 items-start">
-        <h2 className="text-sm text-cardText">Position</h2>
+        <span className="font-bold text-cardText">Position</span>
         <div className="flex justify-center items-center gap-2">
-          <span>{user.position}</span>
+          <span className="text-sm font-bold">{user.specialization}</span>
           <span className="font-semibold text-xs text-navText py-0.5 px-1 border-solid border border-navText rounded-md">
-            {user.role}
+            {user.jobTitle}
           </span>
         </div>
+      </div>
+      <div className="flex flex-col gap-1">
+        <span className="font-bold text-cardText">Status</span>
+        <span className="text-sm font-bold">{user.status}</span>
       </div>
       <div>
         <button className="flex flex-col bg-[rgba(244,249,253,1)] p-2.5 rounded-xl">

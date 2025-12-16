@@ -4,14 +4,16 @@ import { Icon } from "./Icon";
 
 export function Sidebar({ children }) {
   const navigate = useNavigate();
+
   const handleLogout = () => {
+    sessionStorage.removeItem("authToken");
     navigate("/signin");
   };
 
   return (
     <div className="w-[200px] bg-bgBlock rounded-3xl h-full pl-4 py-10 flex flex-col">
       <div className="ml-2 ">
-        <img src="/images/logo.png" alt="logo" className="w-[50px]"/>
+        <img src="/images/logo.png" alt="logo" className="w-[50px]" />
       </div>
       <nav className="font-semibold text-navText flex flex-col gap-y-5 mt-12">
         {children}
@@ -25,8 +27,9 @@ export function Sidebar({ children }) {
           />
         </div>
         <UiButton
-          className="mt-auto mb-4 flex items-center justify-center text-bgApp gap-2"
-          type="md"
+          className="mt-auto mb-4 text-bgApp gap-2"
+          size="md"
+          type="big"
         >
           <Icon id="support" className="w-4 h-4" />
           <span>Support</span>
@@ -35,7 +38,7 @@ export function Sidebar({ children }) {
       <div className="mt-8">
         <button
           className="flex font-bold text-navText gap-4 items-center justify-center"
-          onClick={() => handleLogout()}
+          onClick={handleLogout}
         >
           <Icon id="logout" className="w-5 h-5" />
           <span>Logout</span>

@@ -7,9 +7,8 @@ export function EmployeesList({ users }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("");
   const filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(filter.toLowerCase())
+    user.firstName.toLowerCase().includes(filter.toLowerCase())
   );
-  console.log(filter == false);
 
   const handleSearch = (searchValue) => {
     setFilter(searchValue);
@@ -44,7 +43,6 @@ export function EmployeesList({ users }) {
       setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
   };
 
-  console.log(totalPages);
   return (
     <div className="mt-5 flex flex-col">
       <EmployeesSearchForm onSearch={handleSearch} />
