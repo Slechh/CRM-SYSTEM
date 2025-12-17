@@ -1,33 +1,27 @@
 import { useState } from "react";
-import { fetchExperts } from "../api/experts";
-
-export function UiForm({ formData, handleReset, children, className, handleUpdateList }) {
+import { createExpert } from "../api/createExpert";
+import { UiButton } from "./UiButton";
+export function UiForm({
+  formData,
+  handleReset,
+  children,
+  className,
+  onSuccess,
+  label,
+}) {
   const token = sessionStorage.getItem("authToken");
   const [message, setMessage] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8080/api/v1/experts/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ...formData,
-          specializationId: Number(formData.specializationId),
-        }),
+      const result = await createExpert({
+        token,
+        data: formData,
       });
 
-      if (!response.ok) {
-        throw new Error("Ошибка при создании эксперта");
-      }
-
-      const result = await response.json();
       setMessage("Эксперт создан! ID: " + result.id);
       handleReset();
-      const updatedUsers = await fetchExperts({ token });
-      handleUpdateList(updatedUsers);
+      onSuccess?.();
     } catch (error) {
       setMessage(error.message);
     }
@@ -35,6 +29,11 @@ export function UiForm({ formData, handleReset, children, className, handleUpdat
   return (
     <form onSubmit={handleSubmit} className={className}>
       {children}
+      <div className="mt-6 flex justify-end">
+        <UiButton btnType="submit" size="lg" type="big">
+          <span> Create {label}</span>
+        </UiButton>
+      </div>
       {message && <p>{message}</p>}
     </form>
   );

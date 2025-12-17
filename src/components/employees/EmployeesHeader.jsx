@@ -3,7 +3,7 @@ import { UiButton } from "../../uikit/UiButton";
 import { Icon } from "../Icon";
 import { EmployeeAddForm } from "./EmployeeAddForm";
 
-export function EmployeesHeader({ users, handleUpdateList }) {
+export function EmployeesHeader({ users, onEmployeeCreated }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpen = () => {
     setIsModalOpen(true);
@@ -32,7 +32,15 @@ export function EmployeesHeader({ users, handleUpdateList }) {
           <Icon id="plus" className="w-3 h-3" />
           <span>Add Employee</span>
         </UiButton>
-        {isModalOpen && <EmployeeAddForm isModalClose={handleClose} handleUpdateList={handleUpdateList}/>}
+        {isModalOpen && (
+          <EmployeeAddForm
+            isModalClose={handleClose}
+            onSuccess={() => {
+              onEmployeeCreated();
+              handleClose();
+            }}
+          />
+        )}
       </div>
     </div>
   );

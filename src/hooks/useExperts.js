@@ -7,17 +7,20 @@ export function useExperts() {
   const [error, setError] = useState(null);
 
   const token = sessionStorage.getItem("authToken");
-  const handleUpdateList = (users) => {
-    setUsers(users);
+  const fetchList = async () => {
+    try {
+      setLoading(true);
+      const data = await fetchExperts({ token });
+      setUsers(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
   useEffect(() => {
-    fetchExperts({ token })
-      .then((data) => {
-        setUsers(data);
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+    fetchList();
   }, []);
 
-  return { users, loading, error, handleUpdateList };
+  return { users, loading, error, refetchExperts: fetchList };
 }
