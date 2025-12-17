@@ -1,17 +1,19 @@
 import { UiModal } from "../../uikit/UiModal";
-import { UiButton } from "../../uikit/UiButton";
 import { UiForm } from "../../uikit/UiForm";
 import { UiInput } from "../../uikit/UiInput";
+import { UiSelect } from "../../uikit/UiSelect";
 
 import { EMPLOYEE_INPUT_INFO } from "../../constants/employeeInput";
 
 import { useEmployeeForm } from "../../hooks/useEmployeeForm";
+import { useSpecializations } from "../../hooks/useSpecializations";
 
 export function EmployeeAddForm({ isModalClose, onSuccess }) {
   const {
     data: employeeData,
     handleChange,
     handleReset,
+    isValid,
   } = useEmployeeForm({
     firstname: "",
     lastname: "",
@@ -19,6 +21,8 @@ export function EmployeeAddForm({ isModalClose, onSuccess }) {
     specializationId: "",
     sourcingMethod: "",
   });
+
+  const { specializations, loading } = useSpecializations();
 
   return (
     <UiModal
@@ -34,19 +38,40 @@ export function EmployeeAddForm({ isModalClose, onSuccess }) {
           onSuccess={onSuccess}
           className="mt-6"
           label="Employee"
+          isDisabled={!isValid}
         >
           <div className="grid grid-cols-2 gap-3">
-            {EMPLOYEE_INPUT_INFO.map((input) => (
-              <UiInput
-                key={input.name}
-                employeeData={employeeData[input.name]}
-                input={input.name}
-                label={input.label}
-                placeholder={input.placeholder}
-                handleChange={handleChange}
-                className={input.colSpan ? "col-span-2" : ""}
-              />
-            ))}
+            {EMPLOYEE_INPUT_INFO.map((input) => {
+              if (input.name === "specializationId") {
+                return (
+                  <UiSelect
+                    key={input.name}
+                    label={input.label}
+                    value={employeeData.specializationId}
+                    options={specializations}
+                    onChange={(value) => {
+                      handleChange({
+                        target: { name: "specializationId", value },
+                      });
+                    }}
+                    className={input.colSpan ? "col-span-2" : ""}
+                    placeholder="Select specialization"
+                  />
+                );
+              }
+
+              return (
+                <UiInput
+                  key={input.name}
+                  employeeData={employeeData[input.name]}
+                  input={input.name}
+                  label={input.label}
+                  placeholder={input.placeholder}
+                  handleChange={handleChange}
+                  className={input.colSpan ? "col-span-2" : ""}
+                />
+              );
+            })}
           </div>
         </UiForm>
       </UiModal.Body>

@@ -15,5 +15,7 @@ export function useEmployeeForm(initial = {}) {
     setData(initial);
   };
 
-  return { data, handleChange, handleReset };
+  const isValid = Object.values(data).every(Boolean);
+
+  return { data, handleChange, handleReset, isValid };
 }

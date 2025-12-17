@@ -9,8 +9,8 @@ export const EMPLOYEE_INPUT_INFO = [
   },
   {
     name: "specializationId",
-    label: "Specialization id",
-    placeholder: "Enter specialization id",
+    label: "Specialization",
+    placeholder: "Enter specialization",
     colSpan: 2,
   },
 ];
