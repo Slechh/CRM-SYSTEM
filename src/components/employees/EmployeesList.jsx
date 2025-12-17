@@ -6,9 +6,10 @@ import { EmployeesSwitcher } from "./EmployeesSwitcher";
 export function EmployeesList({ users }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("");
-  const filteredUsers = users.filter((user) =>
-    user.firstName.toLowerCase().includes(filter.toLowerCase())
-  );
+  const filteredUsers = users.filter((user) => {
+    const fullname = `${user.firstName} ${user.lastName}`;
+    return fullname.toLowerCase().includes(filter.toLowerCase());
+  });
 
   const handleSearch = (searchValue) => {
     setFilter(searchValue);
