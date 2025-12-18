@@ -2,8 +2,9 @@ import { useState } from "react";
 import { EmployeeCard } from "./EmployeeCard";
 import { EmployeesSearchForm } from "./EmployeesSearchForm";
 import { EmployeesSwitcher } from "./EmployeesSwitcher";
+import { Spinner } from "../Spinner";
 
-export function EmployeesList({ users, onEmployeeDelete }) {
+export function EmployeesList({ users, onEmployeeDelete, isLoading }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("");
   const filteredUsers = users.filter((user) => {
@@ -43,6 +44,14 @@ export function EmployeesList({ users, onEmployeeDelete }) {
     if (currentPage > 1)
       setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[616px]">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <div className="mt-5 flex flex-col">

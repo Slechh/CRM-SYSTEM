@@ -6,11 +6,9 @@ export function SignInPage() {
 
   const handleSuccess = async (credentialResponse) => {
     try {
-      // credentialResponse.credential - это Google JWT токен
       const googleToken = credentialResponse.credential;
       console.log(googleToken);
 
-      // Отправляем Google токен на бэк
       const res = await fetch('http://localhost:8080/api/v1/login', {
         method: 'POST',
         headers: {
@@ -25,14 +23,11 @@ export function SignInPage() {
         throw new Error('Ошибка авторизации');
       }
 
-      // Получаем наш кастомный JWT от бэка
       const data = await res.json();
 
-      // Сохраняем токен
       sessionStorage.setItem('authToken', data.accessToken);
       sessionStorage.setItem('userEmail', data.user.email);
 
-      // Редирект на главную
       navigate('/dashboard');
 
     } catch (error) {

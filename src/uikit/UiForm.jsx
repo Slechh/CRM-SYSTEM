@@ -16,12 +16,11 @@ export function UiForm({
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await createExpert({
+      await createExpert({
         token,
         data: formData,
       });
 
-      setMessage("Эксперт создан! ID: " + result.id);
       handleReset();
       onSuccess?.();
     } catch (error) {
