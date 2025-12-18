@@ -51,7 +51,7 @@ export function EmployeesList({ users, onEmployeeDelete }) {
         <ul className="flex flex-col gap-y-5 overflow-hidden mt-5 min-h-[616px]">
           {employeeList.map((user, index) => (
             <li className="w-full" key={index}>
-              <EmployeeCard user={user} onSuccessDelete={onEmployeeDelete} />
+              <EmployeeCard user={user} onDelete={onEmployeeDelete} />
             </li>
           ))}
         </ul>

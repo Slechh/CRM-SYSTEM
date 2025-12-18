@@ -3,7 +3,7 @@ import { Icon } from "../Icon";
 import { UiDeleteModal } from "../../uikit/UiDeleteModal";
 import { fetchDeleteExpert } from "../../api/deleteExperts";
 
-export function EmployeeCard({ user, onSuccessDelete }) {
+export function EmployeeCard({ user, onDelete }) {
   const userIdString = String(user.id);
   const userName = `${user.firstName} ${user.lastName}`;
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -62,10 +62,9 @@ export function EmployeeCard({ user, onSuccessDelete }) {
         <UiDeleteModal
           label="Expert"
           handleCloseModal={handleClose}
-          userId={userIdString}
           userName={userName}
           fetchDeleteExpert={fetchDeleteExpert}
-          onSuccessDelete={onSuccessDelete}
+          onDelete={() => onDelete(userIdString)}
         />
       )}
     </div>

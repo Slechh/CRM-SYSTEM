@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchExperts } from "../api/experts";
+import { fetchDeleteExpert } from "../api/deleteExperts";
 
 export function useExperts() {
   const [users, setUsers] = useState([]);
@@ -7,7 +8,8 @@ export function useExperts() {
   const [error, setError] = useState(null);
 
   const token = sessionStorage.getItem("authToken");
-  const fetchList = async () => {
+
+  const refetchExperts = async () => {
     try {
       setLoading(true);
       const data = await fetchExperts({ token });
@@ -18,9 +20,21 @@ export function useExperts() {
       setLoading(false);
     }
   };
+
+  const deleteExpert = async (id) => {
+    await fetchDeleteExpert({ token, id });
+    refetchExperts();
+  };
+
   useEffect(() => {
-    fetchList();
+    refetchExperts();
   }, []);
 
-  return { users, loading, error, refetchExperts: fetchList };
+  return {
+    users,
+    loading,
+    error,
+    refetchExperts, 
+    deleteExpert,   
+  };
 }

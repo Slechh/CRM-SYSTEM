@@ -5,12 +5,9 @@ import { useEffect } from "react";
 export function UiDeleteModal({
   label,
   handleCloseModal,
-  fetchDeleteExpert,
-  userId,
   userName,
-  onSuccessDelete,
+  onDelete,
 }) {
-  console.log(onSuccessDelete);
   const token = sessionStorage.getItem("authToken");
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -39,8 +36,7 @@ export function UiDeleteModal({
         <div className="flex gap-5">
           <UiButton
             size="md"
-            type="big"
-            className=" bg-slate-500 hover:bg-slate-700 transition-all duration-300 rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.1)]"
+            type="cancel"
             onClick={handleCloseModal}
           >
             Cancel
@@ -49,8 +45,7 @@ export function UiDeleteModal({
             size="md"
             type="big"
             onClick={async () => {
-              await fetchDeleteExpert({ token, id: userId });
-              onSuccessDelete();
+              await onDelete();
               handleCloseModal();
             }}
           >

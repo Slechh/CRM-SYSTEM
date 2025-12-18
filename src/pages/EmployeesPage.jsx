@@ -3,11 +3,11 @@ import { EmployeesList } from "../components/employees/EmployeesList";
 import { useExperts } from "../hooks/useExperts";
 
 export function EmployeesPage({ className }) {
-  const { users, loading, error, refetchExperts } = useExperts();
+  const { users, loading, error, refetchExperts, deleteExpert } = useExperts();
   return (
     <div className={className}>
       <EmployeesHeader users={users} onEmployeeCreated={refetchExperts} />
-      <EmployeesList users={users} onEmployeeDelete={refetchExperts}/>
+      <EmployeesList users={users} onEmployeeDelete={deleteExpert}/>
     </div>
   );
 }
