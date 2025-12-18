@@ -25,6 +25,8 @@ export function UiButton({
       small: "px-2.5 bg-bgApp rounded-2xl",
       normal: "px-3 bg-bgBlock rounded-xl",
       big: "px-4 bg-bgNavBlock shadow-[0_8px_30px_rgba(63,140,255,0.3)] hover:bg-blue-500 transition-all duration-300 rounded-xl",
+      cancel:
+        "px-4 bg-slate-500 hover:bg-slate-700 transition-all duration-300 rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.1)] rounded-xl",
     }[type]
   );
   return (
