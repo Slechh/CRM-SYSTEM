@@ -8,6 +8,7 @@ export function SignInPage() {
     try {
       // credentialResponse.credential - это Google JWT токен
       const googleToken = credentialResponse.credential;
+      console.log(googleToken);
 
       // Отправляем Google токен на бэк
       const res = await fetch('http://localhost:8080/api/v1/login', {

@@ -1,4 +1,4 @@
-import { UiModal } from "../../uikit/UiModal";
+import { UiCreateModal } from "../../uikit/UiCreateModal";
 import { UiForm } from "../../uikit/UiForm";
 import { UiInput } from "../../uikit/UiInput";
 import { UiSelect } from "../../uikit/UiSelect";
@@ -25,13 +25,13 @@ export function EmployeeAddForm({ isModalClose, onSuccess }) {
   const { specializations, loading } = useSpecializations();
 
   return (
-    <UiModal
+    <UiCreateModal
       label="Employee"
       isModalClose={isModalClose}
       bgForm={{ path: "employeeBg", alt: "Bg Form" }}
       bgGirl={{ path: "employeeGirlBg", alt: "Bg Girl Form" }}
     >
-      <UiModal.Body>
+      <UiCreateModal.Body>
         <UiForm
           formData={employeeData}
           handleReset={handleReset}
@@ -74,7 +74,7 @@ export function EmployeeAddForm({ isModalClose, onSuccess }) {
             })}
           </div>
         </UiForm>
-      </UiModal.Body>
-    </UiModal>
+      </UiCreateModal.Body>
+    </UiCreateModal>
   );
 }

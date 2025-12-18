@@ -10,7 +10,7 @@ export function UiButton({
   disabled,
 }) {
   const isDisabled = disabled
-    ? "bg-slate-500 cursor-not-allowed hover:bg-slate-700 transition-all duration-300 rounded-xl   shadow-[0_8px_30px_rgba(0,0,0,0.15)]"
+    ? "bg-slate-500 cursor-not-allowed hover:bg-slate-700 transition-all duration-300 rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.15)]"
     : "";
   const buttonClassName = clsx(
     "h-12 font-bold flex gap-2 text-bgBlock items-center justify-center",
