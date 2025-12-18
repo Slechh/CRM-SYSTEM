@@ -7,7 +7,7 @@ export function EmployeesPage({ className }) {
   return (
     <div className={className}>
       <EmployeesHeader users={users} onEmployeeCreated={refetchExperts} />
-      <EmployeesList users={users} onEmployeeDelete={deleteExpert}/>
+      <EmployeesList users={users} onEmployeeDelete={deleteExpert} isLoading={loading}/>
     </div>
   );
 }

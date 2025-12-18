@@ -9,11 +9,26 @@ export function useSpecializations() {
   const token = sessionStorage.getItem("authToken");
 
   useEffect(() => {
-    fetchSpecializations({ token })
-      .then(setSpecializations)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
+    let isMounted = true;
+
+    const fetchData = async () => {
+      try {
+        if (isMounted) setLoading(true);
+        const data = await fetchSpecializations({ token });
+        if (isMounted) setSpecializations(data);
+      } catch (err) {
+        if (isMounted) setError(err.message);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [token]);
 
   return { specializations, loading, error };
 }

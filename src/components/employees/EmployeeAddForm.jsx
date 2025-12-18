@@ -14,6 +14,7 @@ export function EmployeeAddForm({ isModalClose, onSuccess }) {
     handleChange,
     handleReset,
     isValid,
+    errors,
   } = useEmployeeForm({
     firstname: "",
     lastname: "",
@@ -61,15 +62,23 @@ export function EmployeeAddForm({ isModalClose, onSuccess }) {
               }
 
               return (
-                <UiInput
+                <div
                   key={input.name}
-                  employeeData={employeeData[input.name]}
-                  input={input.name}
-                  label={input.label}
-                  placeholder={input.placeholder}
-                  handleChange={handleChange}
                   className={input.colSpan ? "col-span-2" : ""}
-                />
+                >
+                  <UiInput
+                    employeeData={employeeData[input.name]}
+                    input={input.name}
+                    label={input.label}
+                    placeholder={input.placeholder}
+                    handleChange={handleChange}
+                  />
+                  {errors[input.name] && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors[input.name]}
+                    </p>
+                  )}
+                </div>
               );
             })}
           </div>

@@ -27,14 +27,32 @@ export function useExperts() {
   };
 
   useEffect(() => {
-    refetchExperts();
-  }, []);
+    let isMounted = true;
+
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchExperts({ token });
+        if (isMounted) setUsers(data);
+      } catch (err) {
+        if (isMounted) setError(err.message);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [token]);
 
   return {
     users,
     loading,
     error,
-    refetchExperts, 
-    deleteExpert,   
+    refetchExperts,
+    deleteExpert,
   };
 }
