@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 
 export function DashboardPage() {
-
+  const token = sessionStorage.getItem("authToken");
+  console.log(token);
 }
 //   const [formData, setFormData] = useState({
 //     projectName: "",

@@ -3,7 +3,7 @@ import { EmployeeCard } from "./EmployeeCard";
 import { EmployeesSearchForm } from "./EmployeesSearchForm";
 import { EmployeesSwitcher } from "./EmployeesSwitcher";
 
-export function EmployeesList({ users }) {
+export function EmployeesList({ users, onEmployeeDelete }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("");
   const filteredUsers = users.filter((user) => {
@@ -51,7 +51,7 @@ export function EmployeesList({ users }) {
         <ul className="flex flex-col gap-y-5 overflow-hidden mt-5 min-h-[616px]">
           {employeeList.map((user, index) => (
             <li className="w-full" key={index}>
-              <EmployeeCard user={user} />
+              <EmployeeCard user={user} onSuccessDelete={onEmployeeDelete} />
             </li>
           ))}
         </ul>

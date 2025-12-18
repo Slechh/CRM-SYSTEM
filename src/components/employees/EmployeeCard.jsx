@@ -1,5 +1,20 @@
+import { useState } from "react";
 import { Icon } from "../Icon";
-export function EmployeeCard({ user }) {
+import { UiDeleteModal } from "../../uikit/UiDeleteModal";
+import { fetchDeleteExpert } from "../../api/deleteExperts";
+
+export function EmployeeCard({ user, onSuccessDelete }) {
+  const userIdString = String(user.id);
+  const userName = `${user.firstName} ${user.lastName}`;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div
       className="h-[86px] bg-bgBlock rounded-3xl py-5 px-7 items-center grid 
@@ -36,10 +51,23 @@ export function EmployeeCard({ user }) {
         <span className="text-sm font-bold">{user.status}</span>
       </div>
       <div>
-        <button className="flex flex-col bg-[rgba(244,249,253,1)] p-2.5 rounded-xl">
-          <Icon id="more" className="w-5 h-5" />
+        <button
+          className="flex flex-col bg-[rgba(244,249,253,1)] p-2.5 rounded-xl"
+          onClick={handleOpen}
+        >
+          <Icon id="trash" className="w-5 h-5 text-bgNavBlock" />
         </button>
       </div>
+      {isModalOpen && (
+        <UiDeleteModal
+          label="Expert"
+          handleCloseModal={handleClose}
+          userId={userIdString}
+          userName={userName}
+          fetchDeleteExpert={fetchDeleteExpert}
+          onSuccessDelete={onSuccessDelete}
+        />
+      )}
     </div>
   );
 }

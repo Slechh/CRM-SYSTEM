@@ -18,7 +18,7 @@ export function EmployeesSwitcher({
           </span>
           <div className="flex gap-x-1 ml-5">
             <button
-              className="w-6 h-6"
+              className="w-6 h-6 flex items-center justify-center"
               onClick={previousSlide}
               disabled={isLeftButtonDisabled}
             >
@@ -31,7 +31,7 @@ export function EmployeesSwitcher({
               />
             </button>
             <button
-              className="w-6 h-6"
+              className="w-6 h-6 flex items-center justify-center"
               onClick={nextSlide}
               disabled={isRightButtonDisabled}
             >
