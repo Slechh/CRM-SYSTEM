@@ -1,6 +1,6 @@
-export async function fetchSpecializations({ token }) {
+export async function fetchOverviewExpert({ token, id }) {
   const response = await fetch(
-    "http://localhost:8080/api/v1/experts/specializations/all",
+    `http://localhost:8080/api/v1/experts/${id}/overview`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

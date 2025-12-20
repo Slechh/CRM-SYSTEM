@@ -13,7 +13,7 @@ export function UiButton({
     ? "bg-slate-500 cursor-not-allowed hover:bg-slate-700 transition-all duration-300 rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.15)]"
     : "";
   const buttonClassName = clsx(
-    "h-12 font-bold flex gap-2 text-bgBlock items-center justify-center",
+    "h-12 font-bold flex gap-2 items-center justify-center",
     className,
     isDisabled,
     {
@@ -24,9 +24,9 @@ export function UiButton({
     {
       small: "px-2.5 bg-bgApp rounded-2xl",
       normal: "px-3 bg-bgBlock rounded-xl",
-      big: "px-4 bg-bgNavBlock shadow-[0_8px_30px_rgba(63,140,255,0.3)] hover:bg-blue-500 transition-all duration-300 rounded-xl",
+      big: "px-4 bg-bgNavBlock shadow-[0_8px_30px_rgba(63,140,255,0.3)] hover:bg-blue-500 transition-all duration-300 rounded-xl text-bgBlock ",
       cancel:
-        "px-4 bg-slate-500 hover:bg-slate-700 transition-all duration-300 rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.1)] rounded-xl",
+        "px-4 bg-slate-500 hover:bg-slate-700 transition-all duration-300 rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.1)] rounded-xl text-bgBlock",
     }[type]
   );
   return (

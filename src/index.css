@@ -6,6 +6,7 @@
 @layer base {
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
   }
 }
 
@@ -18,6 +19,7 @@ body {
   --bg-block: #ffffff;
   --bg-nav-block: #3f8cff;
   --bg-modal: #d2defe;
+  --bg-line: #e4e6e8;
   --user-text: #0a1629;
   --nav-text: #7d8592;
   --card-text: #91929e;
