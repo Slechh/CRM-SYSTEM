@@ -4,6 +4,7 @@ import {
   NotFoundPage,
   EmployeesPage,
   SignInPage,
+  OverviewPage,
 } from "../pages/index.js";
 import { Layout } from "../layouts/layout.jsx";
 import { ProtectedRoute } from "./protectedRoute.jsx";
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
             path: "employees",
             element: <EmployeesPage className="mt-6 pb-5" />,
           },
+          { path: "overview/:id", element: <OverviewPage className="mt-7" /> },
         ],
       },
     ],

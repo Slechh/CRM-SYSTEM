@@ -16,7 +16,7 @@ export function UiInput({
         onChange={handleChange} 
         placeholder={placeholder} 
         autoComplete="off"
-        className="border-2 border-formBorder rounded-2xl pl-4 py-3 shadow-sm focus:border-blue-500 focus:outline-none transition-colors duration-300 font-normal"
+        className="border-2 border-formBorder rounded-2xl px-4 py-3 shadow-sm focus:border-blue-500 focus:outline-none transition-colors duration-300 font-normal"
       />
     </div>
   );

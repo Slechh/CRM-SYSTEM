@@ -11,7 +11,7 @@ export function Sidebar({ children }) {
   };
 
   return (
-    <div className="w-[200px] bg-bgBlock rounded-3xl h-full pl-4 py-10 flex flex-col">
+    <div className="flex flex-col pl-4 py-10 w-[200px] bg-bgBlock rounded-3xl h-full">
       <div className="ml-2 ">
         <img src="/images/logo.png" alt="logo" className="w-[50px]" />
       </div>

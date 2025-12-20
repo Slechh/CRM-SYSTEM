@@ -4,3 +4,4 @@ export * from "./NotFoundPage";
 export * from "./ProjectsPage";
 export * from "./VacationsPage";
 export * from "./SignInPage";
+export * from "./OverviewPage";
