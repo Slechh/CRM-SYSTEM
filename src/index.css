@@ -25,6 +25,7 @@ body {
   --card-text: #91929e;
   --switcher-text: #9ccd1;
   --form-border: #d8e0f0;
+  --overview-switcher: #E6EDF5;
 }
 
 input[type="search"]::-webkit-search-cancel-button {

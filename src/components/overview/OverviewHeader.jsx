@@ -10,9 +10,6 @@ export function OverviewHeader({ userInfo }) {
           alt="logo"
           className="w-[64px] border-2 border-solid border-bgNavBlock rounded-full"
         />
-        <UiButton size="xs" type="small">
-          <Icon id="edit" className="w-6 h-6"></Icon>
-        </UiButton>
       </div>
       <div className="flex flex-col gap-1.5 mt-4 mb-7">
         <h2 className="text-[22px] font-bold">
