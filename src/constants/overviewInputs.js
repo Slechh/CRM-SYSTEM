@@ -25,3 +25,28 @@ export const OVERVIEW_MAIN_INFO = [
     placeholder: "Enter city",
   },
 ];
+
+export const OVERVIEW_PROFESSIONAL_INFO = [
+  {
+    name: "expertSpecialization",
+    label: "Specialization",
+    placeholder: "Enter specialization",
+    keyId: "spec_id",
+  },
+  {
+    name: "yearsOfExperience",
+    label: "Years of experience",
+    placeholder: "Enter years",
+    keyId: "exp_id",
+  },
+  {
+    name: "monthlySalaryUsd",
+    label: "Monthly salary USD",
+    placeholder: "Enter salary",
+  },
+  {
+    name: "sourcingMethod",
+    label: "Sourcing method",
+    placeholder: "Enter sourcing method",
+  },
+];

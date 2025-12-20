@@ -33,6 +33,7 @@ export default {
         cardText: "var(--card-text)",
         switcherText: "var(--switcher-text)",
         formBorder: "var(--form-border)",
+        overviewSwitcher: "var(--overview-switcher)",
       },
     },
   },
