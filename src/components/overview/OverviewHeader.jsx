@@ -1,6 +1,3 @@
-import { UiButton } from "../../uikit/UiButton";
-import { Icon } from "../Icon";
-
 export function OverviewHeader({ userInfo }) {
   return (
     <div className="px-6 pt-6">

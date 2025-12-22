@@ -7,12 +7,10 @@ import { Icon } from "../Icon";
 
 export function OverviewMainInfo({ userInfo, isBtnClicked, handleBtnClick }) {
   const { register, handleSubmit, setValue } = useForm();
-
   useEffect(() => {
     if (userInfo) {
-      console.log(Object.keys(userInfo));
       Object.keys(userInfo).forEach((key) => {
-        setValue(key, userInfo[key] ? userInfo[key] : "-");
+        setValue(key, userInfo[key] ? userInfo[key] : "");
       });
     }
   }, [userInfo, setValue]);
@@ -47,7 +45,6 @@ export function OverviewMainInfo({ userInfo, isBtnClicked, handleBtnClick }) {
                 placeholder={info.placeholder}
                 className={i !== 0 ? "mt-5" : ""}
                 {...register(info.name)}
-                isdis
               />
             ))}
           </div>

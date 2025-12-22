@@ -26,5 +26,5 @@ export function useOverview(id) {
     loadUser();
   }, [id, token]);
 
-  return { userInfo, userLoading, userError };
+  return { userInfo, userLoading, userError, setUserInfo };
 }

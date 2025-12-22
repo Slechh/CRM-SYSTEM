@@ -11,7 +11,7 @@ export function useEmployeeForm(initial = {}) {
       error = "Поле обязательно";
     } else if (
       ["firstname", "lastname", "sourcingMethod", "jobTitle"].includes(name) &&
-      value.length > 20
+      value.length > 30
     ) {
       error = "Слишком длинное значение (макс 20 символов)";
     }
@@ -33,6 +33,7 @@ export function useEmployeeForm(initial = {}) {
     setErrors({});
   };
 
+  
   const isValid =
     Object.values(data).every(Boolean) &&
     Object.values(errors).every((e) => !e);
