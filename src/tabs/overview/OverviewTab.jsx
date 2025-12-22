@@ -15,21 +15,37 @@ export function OverviewTab() {
   const token = sessionStorage.getItem("authToken");
 
   useEffect(() => {
-    if (userInfo) {
-      Object.keys(userInfo).forEach((key) => {
-        setValue(key, userInfo[key] ? userInfo[key] : "");
-      });
-    }
-  }, [userInfo, setValue]);
+    if (!userInfo) return;
 
+    Object.entries(userInfo).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        setValue(key, value, { shouldDirty: false });
+      }
+    });
+  }, [userInfo, setValue]);
   const changeMode = () => {
     setIsRightBtnClicked((prev) => !prev);
   };
 
   const onSubmit = (data) => {
-    const { expertId, createdAt, fullName, title, ...rest } = data; // убираем лишние поля
+    console.log("RAW FORM DATA:", data);
+
+    const {
+      expertId,
+      createdAt,
+      fullName,
+      firstName,
+      lastName,
+      title,
+      ...rest
+    } = data;
+
     const expertData = {
       ...rest,
+      // Мапим поля обратно на то, что ожидает бэк
+      firstname: firstName,
+      lastname: lastName,
+      jobTitle: title,
       yearsOfExperience: rest.yearsOfExperience
         ? Number(rest.yearsOfExperience)
         : 0,
@@ -52,8 +68,8 @@ export function OverviewTab() {
     setIsRightBtnClicked(false);
 
     updateExpert({ token, expertData, expertId }).then((data) => {
+      console.log("SERVER RESPONSE:", data);
       setUserInfo(data);
-      console.log(data);
     });
   };
 
@@ -83,15 +99,13 @@ export function OverviewTab() {
           <UiFieldSet
             editButton={editButton}
             title="Employee Information"
-            changeMode={changeMode}
             isRightBtnClicked={isRightBtnClicked}
             register={register}
             arrToRender={OVERVIEW_EMPLOYEE_INFO}
-          ></UiFieldSet>
+          />
           <div className="h-1 w-full bg-bgApp"></div>
           <UiFieldSet
             title="Professional Information"
-            changeMode={changeMode}
             isRightBtnClicked={isRightBtnClicked}
             register={register}
             arrToRender={OVERVIEW_PROFESSIONAL_INFO}
@@ -166,105 +180,4 @@ export function OverviewTab() {
       </form>
     </>
   );
-  // const { id } = useParams(); // получаем id из url
-  // const token = sessionStorage.getItem("authToken"); // получаем token из сессии
-  // console.log(token);
-  // console.log(typeof id);
-
-  // const [formData, setFormData] = useState({
-  //   firstname: "",
-  //   lastname: "",
-  //   shortName: "",
-  //   jobTitle: "",
-  //   specialization: "",
-  //   sourcingMethod: "",
-  //   yearsOfExperience: 0,
-  //   monthlySalaryUsd: 0,
-  //   interviewed: "",
-  //   status: "",
-  //   country: "",
-  //   city: "",
-  //   linkedInUrl: "",
-  //   contacts: "",
-  //   education: "",
-  //   fullCv: "",
-  //   technologies: [""],
-  //   programmingLanguages: [""],
-  // });
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   if (name === "technologies" || name === "programmingLanguages") {
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       [name]: value.split(",").map((v) => v.trim()),
-  //     }));
-  //   } else if (name === "yearsOfExperience" || name === "monthlySalaryUsd") {
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       [name]: Number(value),
-  //     }));
-  //   } else {
-  //     setFormData((prev) => ({ ...prev, [name]: value }));
-  //   }
-  // };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (!token) return alert("Нет токена!");
-  //   if (!id) return alert("Нет ID эксперта!");
-
-  //   try {
-  //     const response = await fetch(
-  //       `http://localhost:8080/api/v1/experts/${Number(id)}/overview`,
-  //       {
-  //         method: "PUT",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //         body: JSON.stringify(formData),
-  //       }
-  //     );
-  //     if (!response.ok) throw new Error(`Ошибка: ${response.status}`);
-  //     const data = await response.json();
-  //     console.log("Success:", data);
-  //     alert("Данные успешно отправлены!");
-  //   } catch (err) {
-  //     console.error(err);
-  //     alert("Ошибка при отправке");
-  //   }
-  // };
-
-  // return (
-  //   <form className="p-4 space-y-2" onSubmit={handleSubmit}>
-  //     {Object.keys(formData).map((key) => (
-  //       <div key={key} className="flex flex-col">
-  //         <label className="font-bold text-sm">{key}</label>
-  //         <input
-  //           type={typeof formData[key] === "number" ? "number" : "text"}
-  //           name={key}
-  //           value={
-  //             Array.isArray(formData[key])
-  //               ? formData[key].join(", ")
-  //               : formData[key]
-  //           }
-  //           onChange={handleChange}
-  //           className="border p-1"
-  //         />
-  //         {Array.isArray(formData[key]) && (
-  //           <small className="text-gray-500">
-  //             Ввод через запятую для массивов
-  //           </small>
-  //         )}
-  //       </div>
-  //     ))}
-  //     <button
-  //       type="submit"
-  //       className="bg-blue-500 text-white px-4 py-2 rounded"
-  //     >
-  //       Отправить
-  //     </button>
-  //   </form>
-  // );
 }

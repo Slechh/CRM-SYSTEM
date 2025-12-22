@@ -14,6 +14,7 @@ export function UiFieldSet({
       <div className="grid grid-cols-3 mt-3 gap-y-5 gap-x-10">
         {arrToRender.map((info, i) => (
           <InputUi
+            type={info.type}
             isDisabled={!isRightBtnClicked}
             key={i}
             label={info.label}
