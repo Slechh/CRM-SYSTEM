@@ -1,17 +1,17 @@
 export const OVERVIEW_MAIN_INFO = [
   {
-    name: "firstName",
+    name: "firstname",
     label: "First Name",
     placeholder: "Enter first name",
   },
   {
-    name: "lastName",
+    name: "lastname",
     label: "Last Name",
     placeholder: "Enter last name",
   },
   {
-    name: "title",
-    label: "Title",
+    name: "jobTitle",
+    label: "Job Title",
     placeholder: "Enter title",
   },
   {
@@ -28,7 +28,7 @@ export const OVERVIEW_MAIN_INFO = [
 
 export const OVERVIEW_PROFESSIONAL_INFO = [
   {
-    name: "expertSpecialization",
+    name: "specialization",
     label: "Specialization",
     placeholder: "Enter specialization",
     keyId: "spec_id",
@@ -48,5 +48,43 @@ export const OVERVIEW_PROFESSIONAL_INFO = [
     name: "sourcingMethod",
     label: "Sourcing method",
     placeholder: "Enter sourcing method",
+  },
+];
+
+export const OVERVIEW_EMPLOYEE_INFO = [
+  {
+    name: "shortName",
+    label: "Short Name",
+    placeholder: "Enter short name",
+  },
+  {
+    name: "linkedInUrl",
+    label: "LinkedIn Url",
+    placeholder: "Enter url",
+  },
+  {
+    name: "contacts",
+    label: "Contacts",
+    placeholder: "Enter contacts",
+  },
+  {
+    name: "education",
+    label: "Education",
+    placeholder: "Enter education",
+  },
+  {
+    name: "technologies",
+    label: "Technologies",
+    placeholder: "Enter technologies",
+  },
+  {
+    name: "programmingLanguages",
+    label: "Programming Languages",
+    placeholder: "Enter Pl",
+  },
+  {
+    name: "fullCv",
+    label: "Full CV",
+    placeholder: "Enter cv",
   },
 ];

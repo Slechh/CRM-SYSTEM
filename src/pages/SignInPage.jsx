@@ -24,10 +24,11 @@ export function SignInPage() {
       }
 
       const data = await res.json();
+      console.log(data);
 
       sessionStorage.setItem('authToken', data.accessToken);
-      sessionStorage.setItem('userEmail', data.user.email);
-
+      sessionStorage.setItem('userRole', data.user.role);
+      
       navigate('/dashboard');
 
     } catch (error) {

@@ -19,4 +19,9 @@ export const NAVITEMS = [
     icon: "employees",
     label: "Employees",
   },
+  {
+    to: "/analytics",
+    icon: "employees",
+    label: "Analytics",
+  },
 ];
