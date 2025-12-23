@@ -5,12 +5,16 @@ export function UiFieldSet({
   isRightBtnClicked,
   register,
   editButton,
+  saveButton,
   arrToRender,
 }) {
   return (
     <fieldset>
       <legend className="text-2xl font-bold">{title}</legend>
-      {editButton}
+      <div className="absolute right-4 top-4 flex items-center gap-3">
+        {saveButton}
+        {editButton}
+      </div>
       <div className="grid grid-cols-3 mt-3 gap-y-5 gap-x-10">
         {arrToRender.map((info, i) => (
           <InputUi

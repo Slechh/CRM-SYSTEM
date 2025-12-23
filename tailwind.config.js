@@ -28,6 +28,7 @@ export default {
         bgNavBlock: "var(--bg-nav-block)",
         bgModal: "var(--bg-modal)",
         bgLine: "var(--bg-line)",
+        bgSvg: "var(--bg-svg)",
         userText: "var(--user-text)",
         navText: "var(--nav-text)",
         cardText: "var(--card-text)",
