@@ -15,4 +15,3 @@ export async function fetchExperts({ token, filters = {} }) {
 
   return response.json();
 }
-

@@ -1,12 +1,5 @@
 export const OVERVIEW_PROFESSIONAL_INFO = [
   {
-    name: "expertSpecialization",
-    label: "Specialization",
-    placeholder: "Enter specialization",
-    keyId: "spec_id",
-    type: "text",
-  },
-  {
     name: "yearsOfExperience",
     label: "Years of experience",
     placeholder: "Enter years",
@@ -23,18 +16,6 @@ export const OVERVIEW_PROFESSIONAL_INFO = [
     name: "sourcingMethod",
     label: "Sourcing method",
     placeholder: "Enter sourcing method",
-    type: "text",
-  },
-  {
-    name: "technologies",
-    label: "Technologies",
-    placeholder: "Enter technologies",
-    type: "text",
-  },
-  {
-    name: "programmingLanguages",
-    label: "Programming Languages",
-    placeholder: "Enter Pl",
     type: "text",
   },
   {
@@ -100,4 +81,34 @@ export const OVERVIEW_EMPLOYEE_INFO = [
     placeholder: "Enter cv",
     type: "text",
   },
+];
+
+export const PROGRAMMING_LANGUAGES = [
+  "Java",
+  "C#",
+  "Python",
+  "Go",
+  "JavaScript",
+  "TypeScript",
+];
+
+export const TECHNOLOGIES = [
+  "Spring Boot",
+  "PostgreSQL",
+  "Docker",
+  "Kubernetes",
+  "AWS",
+  "React",
+  "Angular",
+  "Redis",
+  "Kafka",
+];
+
+export const SPECIALIZATIONS = [
+  "Frontend Developer",
+  "Backend Developer",
+  "FullStack Developer",
+  "DevOps Engineer",
+  "Data Engineer",
+  "QA Engineer",
 ];

@@ -10,8 +10,7 @@ export function ProtectedRoute({ allowedRoles }) {
   }
 
   if (allowedRoles && !allowedRoles.includes(userRole)) {
-    // Если роль не разрешена, редирект на 404 или dashboard
-    return <Navigate to="/" />;
+    return <Navigate to="error" />;
   }
 
   return <Outlet />;

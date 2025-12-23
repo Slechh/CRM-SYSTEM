@@ -13,7 +13,7 @@ export function useEmployeeForm(initial = {}) {
       ["firstname", "lastname", "sourcingMethod", "jobTitle"].includes(name) &&
       value.length > 30
     ) {
-      error = "Слишком длинное значение (макс 20 символов)";
+      error = "Слишком длинное значение (макс 30 символов)";
     }
 
     setErrors((prev) => ({ ...prev, [name]: error }));

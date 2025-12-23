@@ -7,6 +7,7 @@ export function Sidebar({ children }) {
 
   const handleLogout = () => {
     sessionStorage.removeItem("authToken");
+    sessionStorage.removeItem("userRole");
     navigate("/signin");
   };
 

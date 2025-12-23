@@ -8,6 +8,7 @@ export function UiSelect({
   onChange,
   className,
   placeholder,
+  disabled, // добавь это
 }) {
   return (
     <div className={clsx("flex flex-col gap-y-1.5", className)}>
@@ -16,7 +17,11 @@ export function UiSelect({
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full border-2 border-formBorder rounded-2xl pl-4 py-3 pr-10 shadow-sm focus:border-blue-500 focus:outline-none transition-colors duration-300 appearance-none bg-white cursor-pointer font-normal"
+          disabled={disabled} // добавь это
+          className={clsx(
+            "w-full border-2 border-formBorder rounded-2xl pl-4 py-3 pr-10 shadow-sm focus:border-blue-500 focus:outline-none transition-colors duration-300 appearance-none bg-white cursor-pointer font-normal",
+            disabled && "bg-gray-50 cursor-not-allowed" // добавь это
+          )}
         >
           <option value="">{placeholder}</option>
           {options.map((opt) => (

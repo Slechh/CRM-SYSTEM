@@ -6,13 +6,37 @@ import { Icon } from "../../components/Icon";
 import { OVERVIEW_PROFESSIONAL_INFO } from "../../constants/overviewInputs";
 import { OVERVIEW_EMPLOYEE_INFO } from "../../constants/overviewInputs";
 import { updateExpert } from "../../api/updateExpert";
-import { useParams } from "react-router-dom";
+import { UiMultiSelect } from "../../uikit/UiMultiSelect";
+import { useWatch } from "react-hook-form";
+import {
+  TECHNOLOGIES,
+  PROGRAMMING_LANGUAGES,
+  SPECIALIZATIONS,
+} from "../../constants/overviewInputs";
+import { UiSelect } from "../../uikit/UiSelect";
 
 export function OverviewTab() {
   const [isRightBtnClicked, setIsRightBtnClicked] = useState(false);
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, setValue, control } = useForm();
   const { userInfo, setUserInfo } = useOutletContext();
   const token = sessionStorage.getItem("authToken");
+
+  const technologies = useWatch({
+    control,
+    name: "technologies",
+    defaultValue: [],
+  });
+  const programmingLanguages = useWatch({
+    control,
+    name: "programmingLanguages",
+    defaultValue: [],
+  });
+
+  const expertSpecialization = useWatch({
+    control,
+    name: "expertSpecialization",
+    defaultValue: "",
+  });
 
   useEffect(() => {
     if (!userInfo) return;
@@ -28,7 +52,6 @@ export function OverviewTab() {
   };
 
   const onSubmit = (data) => {
-    console.log("RAW FORM DATA:", data);
 
     const {
       expertId,
@@ -37,31 +60,34 @@ export function OverviewTab() {
       firstName,
       lastName,
       title,
+      expertSpecialization, 
       ...rest
     } = data;
 
     const expertData = {
       ...rest,
-      // Мапим поля обратно на то, что ожидает бэк
       firstname: firstName,
       lastname: lastName,
       jobTitle: title,
+      specialization: expertSpecialization, 
       yearsOfExperience: rest.yearsOfExperience
         ? Number(rest.yearsOfExperience)
         : 0,
       monthlySalaryUsd: rest.monthlySalaryUsd
         ? Number(rest.monthlySalaryUsd)
         : 0,
-      programmingLanguages: (rest.programmingLanguages || "")
-        .toString()
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean),
-      technologies: (rest.technologies || "")
-        .toString()
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean),
+      programmingLanguages: Array.isArray(rest.programmingLanguages)
+        ? rest.programmingLanguages
+        : (rest.programmingLanguages || "")
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean),
+      technologies: Array.isArray(rest.technologies)
+        ? rest.technologies
+        : (rest.technologies || "")
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean),
     };
 
     console.log("TRANSFORMED DATA:", expertData);
@@ -74,23 +100,30 @@ export function OverviewTab() {
   };
 
   const editButton = (
-    <div className="absolute right-0 top-0">
-      <button
-        type="button"
-        className="flex items-center gap-1 text-bgNavBlock"
-        onClick={changeMode}
-      >
-        {isRightBtnClicked ? (
-          <Icon id="close" className="w-5 h-5 text-red-500" />
-        ) : (
-          <>
-            <Icon id="edit" className="w-6 h-6" />
-            Edit overview
-          </>
-        )}
-      </button>
-    </div>
+    <button
+      type="button"
+      className="flex items-center gap-1 text-bgNavBlock"
+      onClick={changeMode}
+    >
+      {isRightBtnClicked ? (
+        <Icon id="close" className="w-5 h-5 text-red-500" />
+      ) : (
+        <>
+          <Icon id="edit" className="w-6 h-6" />
+          Edit overview
+        </>
+      )}
+    </button>
   );
+
+  const saveButton = isRightBtnClicked ? (
+    <button
+      type="submit"
+      className="px-4 py-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+    >
+      Save Changes
+    </button>
+  ) : null;
 
   return (
     <>
@@ -98,6 +131,7 @@ export function OverviewTab() {
         <div className="relative flex flex-col gap-[20px]">
           <UiFieldSet
             editButton={editButton}
+            saveButton={saveButton}
             title="Employee Information"
             isRightBtnClicked={isRightBtnClicked}
             register={register}
@@ -167,16 +201,37 @@ export function OverviewTab() {
                 </div>
               </div>
             </div>
+            <UiSelect
+              label="Specialization"
+              value={expertSpecialization || ""}
+              onChange={(val) => setValue("expertSpecialization", val)}
+              options={SPECIALIZATIONS.map((spec) => ({
+                id: spec,
+                name: spec,
+              }))}
+              placeholder="Select specialization"
+              disabled={!isRightBtnClicked}
+            />
+            <UiMultiSelect
+              label="Technologies"
+              value={Array.isArray(technologies) ? technologies : []}
+              onChange={(val) => setValue("technologies", val)}
+              options={TECHNOLOGIES}
+              placeholder="Select technologies"
+              disabled={!isRightBtnClicked}
+            />
+            <UiMultiSelect
+              label="Programming Languages"
+              value={
+                Array.isArray(programmingLanguages) ? programmingLanguages : []
+              }
+              onChange={(val) => setValue("programmingLanguages", val)}
+              options={PROGRAMMING_LANGUAGES}
+              placeholder="Select languages"
+              disabled={!isRightBtnClicked}
+            />
           </UiFieldSet>
         </div>
-        {isRightBtnClicked && (
-          <button
-            type="submit"
-            className="mt-6 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-          >
-            Save Changes
-          </button>
-        )}
       </form>
     </>
   );
