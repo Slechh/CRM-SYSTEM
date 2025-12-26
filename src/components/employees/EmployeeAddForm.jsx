@@ -8,6 +8,8 @@ import { EMPLOYEE_INPUT_INFO } from "../../constants/employeeInput";
 import { useEmployeeForm } from "../../hooks/useEmployeeForm";
 import { useSpecializations } from "../../hooks/useSpecializations";
 
+import { createExpert } from "../../api/createExpert";
+
 export function EmployeeAddForm({ isModalClose, onSuccess }) {
   const {
     data: employeeData,
@@ -23,7 +25,7 @@ export function EmployeeAddForm({ isModalClose, onSuccess }) {
     sourcingMethod: "",
   });
 
-  const { specializations, loading } = useSpecializations();
+  const { specializations } = useSpecializations();
 
   return (
     <UiCreateModal
@@ -40,6 +42,7 @@ export function EmployeeAddForm({ isModalClose, onSuccess }) {
           className="mt-6"
           label="Employee"
           isDisabled={!isValid}
+          create={createExpert}
         >
           <div className="grid grid-cols-2 gap-3">
             {EMPLOYEE_INPUT_INFO.map((input) => {

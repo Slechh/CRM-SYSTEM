@@ -24,13 +24,13 @@ export function UiCreateModal({
 
         <div className="relative w-full mt-6 px-10">
           <img
-            src={`/images/${bgForm.path}.png`}
-            alt={`${bgForm.alt}`}
+            src={`/images/${bgForm?.path}.png`}
+            alt={`${bgForm?.alt}`}
             className="w-full"
           />
           <img
-            src={`/images/${bgGirl.path}.png`}
-            alt={`${bgGirl.alt}`}
+            src={`/images/${bgGirl?.path}.png`}
+            alt={`${bgGirl?.alt}`}
             className="absolute bottom-0 left-1/2 -translate-x-1/2"
           />
         </div>

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { createExpert } from "../api/createExpert";
 import { UiButton } from "./UiButton";
 
 export function UiForm({
@@ -10,18 +9,19 @@ export function UiForm({
   onSuccess,
   label,
   isDisabled,
+  create,
 }) {
   const token = sessionStorage.getItem("authToken");
   const [message, setMessage] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await createExpert({
+      await create?.({
         token,
         data: formData,
       });
 
-      handleReset();
+      handleReset?.();
       onSuccess?.();
     } catch (error) {
       setMessage(error.message);

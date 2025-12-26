@@ -5,18 +5,20 @@ export function UiInput({
   label,
   input,
   className,
-  placeholder
+  placeholder,
+  type,
 }) {
   return (
     <div className={clsx("flex flex-col gap-y-1.5", className)}>
       <label className="text-sm text-black ml-2">{label}</label>
       <input
         name={input}
-        value={employeeData} 
-        onChange={handleChange} 
-        placeholder={placeholder} 
+        value={employeeData}
+        onChange={handleChange}
+        placeholder={placeholder}
+        type={type}
         autoComplete="off"
-        className="border-2 border-formBorder rounded-2xl px-4 py-3 shadow-sm focus:border-blue-500 focus:outline-none transition-colors duration-300 font-normal"
+        className="border-2 border-formBorder rounded-2xl px-4 py-3 shadow-sm focus:border-blue-500 focus:outline-none transition-colors duration-300 font-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
       />
     </div>
   );
