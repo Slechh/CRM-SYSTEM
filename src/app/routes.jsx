@@ -6,6 +6,7 @@ import {
   SignInPage,
   OverviewPage,
   AnalyticsPage,
+  ProjectsPage,
 } from "../pages/index.js";
 
 import { Layout } from "../layouts/layout.jsx";
@@ -30,6 +31,11 @@ const router = createBrowserRouter([
           {
             path: "employees",
             element: <EmployeesPage className="mt-6 pb-5" />,
+          },
+
+          {
+            path: "projects",
+            element: <ProjectsPage className="mt-6 pb-5" />,
           },
 
           {

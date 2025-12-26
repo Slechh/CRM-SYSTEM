@@ -7,7 +7,6 @@ export function SignInPage() {
   const handleSuccess = async (credentialResponse) => {
     try {
       const googleToken = credentialResponse.credential;
-      console.log(googleToken);
 
       const res = await fetch('http://localhost:8080/api/v1/login', {
         method: 'POST',
