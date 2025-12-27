@@ -107,7 +107,7 @@ export const TECHNOLOGIES = [
 export const SPECIALIZATIONS = [
   "Frontend Developer",
   "Backend Developer",
-  "FullStack Developer",
+  "Fullstack Developer",
   "DevOps Engineer",
   "Data Engineer",
   "QA Engineer",

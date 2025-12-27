@@ -31,7 +31,6 @@ export function EmployeesList({ users, onEmployeeDelete, isLoading }) {
     employeeStartIndex,
     employeeLastIndex
   );
-  const result = employeeLastIndex - users.length;
   const isLeftButtonDisabled = currentPage === 1;
   const isRightButtonDisabled = currentPage === totalPages;
 
@@ -72,7 +71,6 @@ export function EmployeesList({ users, onEmployeeDelete, isLoading }) {
       <EmployeesSwitcher
         employeeStartIndex={employeeStartIndex}
         employeeLastIndex={employeeLastIndex}
-        result={result}
         employeeListLength={employeeListLength}
         previousSlide={previousSlide}
         nextSlide={nextSlide}

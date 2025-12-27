@@ -1,42 +1,68 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getAllProjects } from "../api/getAllProjects";
 
-export function useProjects(initial = {}) {
-  const [data, setData] = useState(initial);
-  //   const [errors, setErrors] = useState({});
+export function useProjects() {
+  const [projects, setProjects] = useState([]);
+  const [projectsLoading, setProjectsLoading] = useState(true);
+  const [projectsError, setProjectsError] = useState(null);
 
-  //   const validateField = (name, value) => {
-  //     let error = "";
+  const token = sessionStorage.getItem("authToken");
 
-  //     if (!value) {
-  //       error = "Поле обязательно";
-  //     } else if (
-  //       ["firstname", "lastname", "sourcingMethod", "jobTitle"].includes(name) &&
-  //       value.length > 30
-  //     ) {
-  //       error = "Слишком длинное значение (макс 30 символов)";
-  //     }
+  const getExperts = async () => {
+    try {
+      setProjectsLoading(true);
+      const data = await getAllProjects({ token });
+      setProjects(data);
+    } catch (err) {
+      setProjectsError(err.message);
+    } finally {
+      setProjectsLoading(false);
+    }
+  };
 
-  //     setErrors((prev) => ({ ...prev, [name]: error }));
+  useEffect(() => {
+    getExperts();
+  }, []);
+
+  //   useEffect(() => {
+  //     setLoading(true);
+  //     getAllProjects({ token })
+  //       .then((data) => setProjects(data))
+  //       .catch((err) => setError(err))
+  //       .finally(setLoading(false));
+  //   }, []);
+  console.log(projects);
+
+  //   const deleteExpert = async (id) => {
+  //     await fetchDeleteExpert({ token, id });
+  //     refetchExperts();
   //   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    // validateField(name, value);
+  //   useEffect(() => {
+  //     let isMounted = true;
+
+  //     const fetchData = async () => {
+  //       try {
+  //         setLoading(true);
+  //         const data = await fetchExperts({ token });
+  //         if (isMounted) setUsers(data);
+  //       } catch (err) {
+  //         if (isMounted) setError(err.message);
+  //       } finally {
+  //         if (isMounted) setLoading(false);
+  //       }
+  //     };
+
+  //     fetchData();
+
+  //     return () => {
+  //       isMounted = false;
+  //     };
+  //   }, [token]);
+
+  return {
+    projects,
+    projectsLoading,
+    projectsError,
   };
-
-  const handleReset = () => {
-    setData(initial);
-    // setErrors({});
-  };
-
-  const isValid = Object.values(data).every(Boolean);
-  // && Object.values(errors).every((e) => !e);
-
-  return { data, handleChange, handleReset, isValid };
-
-  //   return { data, handleChange, handleReset, isValid, errors };
 }
