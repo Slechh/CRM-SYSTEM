@@ -8,6 +8,7 @@ import {
   AnalyticsPage,
   ProjectsPage,
 } from "../pages/index.js";
+import { ProjectDetails } from "../components/projects/ProjectsDetails.jsx";
 
 import { Layout } from "../layouts/layout.jsx";
 import { ProtectedRoute } from "./protectedRoute.jsx";
@@ -36,8 +37,13 @@ const router = createBrowserRouter([
           {
             path: "projects",
             element: <ProjectsPage className="mt-6 pb-5" />,
+            children: [
+              {
+                path: ":slug",
+                element: <ProjectDetails />,
+              },
+            ],
           },
-
           {
             element: <ProtectedRoute allowedRoles={["CEO"]} />,
             children: [

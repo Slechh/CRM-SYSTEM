@@ -11,6 +11,7 @@ export const InputUi = forwardRef(
           type={type}
           disabled={isDisabled}
           placeholder={placeholder}
+          autoComplete="off"
           className="border-2 border-formBorder rounded-2xl px-4 py-3 shadow-sm focus:border-blue-500 focus:outline-none transition-colors duration-300 font-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           {...props}
         />

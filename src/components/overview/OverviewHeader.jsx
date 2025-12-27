@@ -1,12 +1,15 @@
 import clsx from "clsx";
 import { NavLink } from "react-router-dom";
+
 export function OverviewHeader({ userInfo }) {
+
   const buttons = [
     { id: "overview", name: "Overview" },
     { id: "attachment", name: "Attachment" },
   ];
+
   return (
-    <div className="px-6 py-6">
+    <div className="px-6 py-6 relative">
       <div className="flex gap-5 items-center">
         <img
           src="/images/photo.png"
@@ -22,6 +25,7 @@ export function OverviewHeader({ userInfo }) {
           </h2>
         </div>
       </div>
+      <div className="w-full h-px bg-bgLine absolute right-0 top-[97.5px]"></div>
       <div className="flex flex-col gap-1.5 mt-4 mb-7">
         <h2 className="text-xl font-bold">Specialization</h2>
         <p className="text-sm font-semibold">{userInfo.expertSpecialization}</p>

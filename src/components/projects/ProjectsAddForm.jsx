@@ -2,7 +2,7 @@ import { UiCreateModal } from "../../uikit/UiCreateModal";
 import { PROJECT_INPUT_INFO } from "../../constants/projectInput";
 import { UiForm } from "../../uikit/UiForm";
 import { UiInput } from "../../uikit/UiInput";
-import { useProjects } from "../../hooks/useProjects";
+import { useProjectsForm } from "../../hooks/useProjectsForm";
 import { createProject } from "../../api/createProject";
 import { jwtDecode } from "jwt-decode";
 
@@ -16,7 +16,7 @@ export function ProjectsAddForm({ handleClose }) {
     handleChange,
     handleReset,
     isValid,
-  } = useProjects({
+  } = useProjectsForm({
     projectName: "",
     description: "",
     clientName: "",
