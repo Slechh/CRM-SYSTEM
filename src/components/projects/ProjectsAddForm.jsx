@@ -23,7 +23,7 @@ export function ProjectsAddForm({ handleClose }) {
     status: "",
     startDate: "",
     endDate: "",
-    budgetUsd: 0,
+    budgetUsd: "",
     createdByUserId: Number(user.sub),
   });
   console.log(projectData);

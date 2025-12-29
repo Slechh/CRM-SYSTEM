@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import { ProjectsHeader } from "../components/projects/ProjectsHeader";
 import { UiPanel } from "../uikit/UiPanel";
 import clsx from "clsx";
@@ -8,12 +8,19 @@ import { ProjectsList } from "../components/projects/ProjectsList";
 import { Icon } from "../components/Icon";
 import { useState } from "react";
 import { ProjectsSwitcher } from "../components/projects/ProjectsSwitcher";
+import { UiDeleteModal } from "../uikit/UiDeleteModal";
+import { deleteProject } from "../api/deleteProject";
 
 export function ProjectsPage({ className }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [inputValue, setInputValue] = useState("");
   const [filter, setFilter] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState(null);
+
   const { projects, projectsLoading, projectsError } = useProjects();
+  const token = sessionStorage.getItem("authToken");
+
   const filteredProjects = projects.filter((projects) => {
     return projects.projectName.toLowerCase().includes(filter.toLowerCase());
   });
@@ -50,10 +57,26 @@ export function ProjectsPage({ className }) {
       setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
   };
 
+  const handleOpenModal = (project) => {
+    setProjectToDelete(project);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setProjectToDelete(null);
+  };
+
+  const handleDelete = async () => {
+    if (projectToDelete) {
+      await deleteProject({ token, projectId: projectToDelete.id });
+    }
+  };
+
   if (projectsLoading) {
     return (
       <div className="flex items-center justify-center">
-        <Spinner />;
+        <Spinner className="h-screen" />
       </div>
     );
   }
@@ -62,8 +85,8 @@ export function ProjectsPage({ className }) {
     <div className={clsx(className, "flex flex-col flex-1")}>
       <ProjectsHeader />
       <div className="flex mt-7 gap-8 flex-1">
-        <div className="flex flex-col gap-2">
-          <UiPanel className="pt-7 pb-3 h-full flex-1">
+        <div className="flex flex-col gap-2 self-start">
+          <UiPanel className="pt-7 pb-3">
             <h2 className="font-bold px-6">All Projects</h2>
             <div className="px-4 mt-2">
               <div className="w-full bg-bgBlock px-5 py-3 rounded-2xl border border-solid border-cardText">
@@ -82,7 +105,10 @@ export function ProjectsPage({ className }) {
               </div>
             </div>
             <div className="w-full h-px bg-bgLine mt-4 mb-2"></div>
-            <ProjectsList projects={projectList} />
+            <ProjectsList
+              projects={projectList}
+              onDeleteClick={handleOpenModal}
+            />
           </UiPanel>
           <ProjectsSwitcher
             projectsStartIndex={projectsStartIndex}
@@ -95,10 +121,19 @@ export function ProjectsPage({ className }) {
           />
         </div>
 
-        <div className="flex-1">
+        <div className="flex flex-1 rounded-3xl bg-bgBlock">
           <Outlet />
         </div>
       </div>
+
+      {isModalOpen && projectToDelete && (
+        <UiDeleteModal
+          label="Project"
+          userName={projectToDelete.projectName}
+          handleCloseModal={handleCloseModal}
+          onDelete={handleDelete}
+        />
+      )}
     </div>
   );
 }

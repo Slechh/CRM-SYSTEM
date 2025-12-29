@@ -1,5 +1,6 @@
 import { UiButton } from "./UiButton";
 import { Icon } from "../components/Icon";
+
 export function UiCreateModal({
   children,
   isModalClose,
@@ -8,8 +9,14 @@ export function UiCreateModal({
   bgGirl,
 }) {
   return (
-    <div className="fixed inset-0 bg-[rgba(33,85,163,0.16)] py-10 overflow-y-auto cursor-default">
-      <div className="bg-bgBlock min-h-[580px] w-[585px] mx-auto rounded-3xl py-12">
+    <div
+      className="fixed inset-0 bg-[rgba(33,85,163,0.16)] py-10 overflow-y-auto cursor-default z-50"
+      onClick={isModalClose} // 1. Клик по фону закрывает модалку
+    >
+      <div
+        className="bg-bgBlock min-h-[580px] w-[585px] mx-auto rounded-3xl py-12"
+        onClick={(e) => e.stopPropagation()} // 2. Предотвращаем закрытие при клике внутри
+      >
         <div className="text-black flex justify-between items-center text-2xl font-bold w-full px-10">
           <h2>Add {label}</h2>
           <UiButton
