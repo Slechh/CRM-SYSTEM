@@ -8,7 +8,6 @@ export function UiDeleteModal({
   userName,
   onDelete,
 }) {
-  const token = sessionStorage.getItem("authToken");
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {

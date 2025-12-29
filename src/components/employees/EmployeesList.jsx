@@ -47,7 +47,7 @@ export function EmployeesList({ users, onEmployeeDelete, isLoading }) {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[616px]">
-        <Spinner />
+        <Spinner className="h-screen" />
       </div>
     );
   }

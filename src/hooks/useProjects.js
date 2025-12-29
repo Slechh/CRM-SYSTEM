@@ -8,7 +8,7 @@ export function useProjects() {
 
   const token = sessionStorage.getItem("authToken");
 
-  const getExperts = async () => {
+  const getProjects = async () => {
     try {
       setProjectsLoading(true);
       const data = await getAllProjects({ token });
@@ -21,7 +21,7 @@ export function useProjects() {
   };
 
   useEffect(() => {
-    getExperts();
+    getProjects();
   }, []);
 
   //   useEffect(() => {

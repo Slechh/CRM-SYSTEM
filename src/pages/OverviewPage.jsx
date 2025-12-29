@@ -16,7 +16,7 @@ export function OverviewPage({ className }) {
   if (userLoading) {
     return (
       <div className="flex items-center justify-center">
-        <Spinner />;
+        <Spinner className="h-screen" />;
       </div>
     );
   }
