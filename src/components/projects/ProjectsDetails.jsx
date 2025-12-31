@@ -16,6 +16,7 @@ export function ProjectDetails() {
   const { project, projectMembers, projectLoading, projectError } =
     useProject(projectId);
 
+
   if (projectLoading) {
     return (
       <div className="w-full h-full bg-bgBlock rounded-3xl animate-pulse"></div>

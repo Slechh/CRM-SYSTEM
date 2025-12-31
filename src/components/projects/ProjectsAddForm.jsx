@@ -6,11 +6,15 @@ import { useProjectsForm } from "../../hooks/useProjectsForm";
 import { createProject } from "../../api/createProject";
 import { jwtDecode } from "jwt-decode";
 
-export function ProjectsAddForm({ handleClose }) {
+export function ProjectsAddForm({ handleClose, getProjects }) {
   const token = sessionStorage.getItem("authToken");
-  console.log(token);
   const user = jwtDecode(token);
-  console.log(user);
+
+  const onSuccess = async () => {
+    await getProjects();
+    handleClose();
+  };
+
   const {
     data: projectData,
     handleChange,
@@ -26,7 +30,8 @@ export function ProjectsAddForm({ handleClose }) {
     budgetUsd: "",
     createdByUserId: Number(user.sub),
   });
-  console.log(projectData);
+
+
   return (
     <UiCreateModal
       label="Project"
@@ -38,7 +43,7 @@ export function ProjectsAddForm({ handleClose }) {
         <UiForm
           formData={projectData}
           handleReset={handleReset}
-          //   onSuccess={onSuccess}
+          onSuccess={onSuccess}
           className="mt-6"
           label="Project"
           isDisabled={!isValid}

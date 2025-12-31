@@ -3,7 +3,7 @@ import { Icon } from "../../components/Icon";
 import { useOutletContext } from "react-router-dom";
 import { uploadFiles } from "../../api/uploadFile";
 import { getFiles } from "../../api/getFile";
-import { fetchDeleteExpert } from "../../api/deleteFile"; // импортируй свою функцию
+import { fetchDeleteExpert } from "../../api/deleteFile"; 
 
 export function AttachmentTab() {
   const [previews, setPreviews] = useState([]);
