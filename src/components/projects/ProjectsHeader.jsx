@@ -3,7 +3,7 @@ import { UiButton } from "../../uikit/UiButton";
 import { Icon } from "../Icon";
 import { ProjectsAddForm } from "./ProjectsAddForm";
 
-export function ProjectsHeader() {
+export function ProjectsHeader({ getProjects }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpen = () => setIsModalOpen((prev) => !prev);
   const handleClose = () => setIsModalOpen((prev) => !prev);
@@ -19,7 +19,9 @@ export function ProjectsHeader() {
         <Icon id="plus" className="w-3 h-3" />
         <span>Add Project</span>
       </UiButton>
-      {isModalOpen && <ProjectsAddForm handleClose={handleClose} />}
+      {isModalOpen && (
+        <ProjectsAddForm handleClose={handleClose} getProjects={getProjects} />
+      )}
     </div>
   );
 }

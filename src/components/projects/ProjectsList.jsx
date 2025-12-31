@@ -18,4 +18,4 @@ export function ProjectsList({ projects, onDeleteClick }) {
       )}
     </ul>
   );
-}
+} 

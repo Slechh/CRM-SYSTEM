@@ -52,7 +52,6 @@ export function OverviewTab() {
   };
 
   const onSubmit = (data) => {
-
     const {
       expertId,
       createdAt,
@@ -60,7 +59,7 @@ export function OverviewTab() {
       firstName,
       lastName,
       title,
-      expertSpecialization, 
+      expertSpecialization,
       ...rest
     } = data;
 
@@ -69,7 +68,7 @@ export function OverviewTab() {
       firstname: firstName,
       lastname: lastName,
       jobTitle: title,
-      specialization: expertSpecialization, 
+      specialization: expertSpecialization,
       yearsOfExperience: rest.yearsOfExperience
         ? Number(rest.yearsOfExperience)
         : 0,
