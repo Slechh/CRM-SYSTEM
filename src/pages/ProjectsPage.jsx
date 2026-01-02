@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { ProjectsSwitcher } from "../components/projects/ProjectsSwitcher";
 import { UiDeleteModal } from "../uikit/UiDeleteModal";
 import { deleteProject } from "../api/deleteProject";
+import { addEmployeeToProject } from "../api/addEmployeeToProject";
 
 export function ProjectsPage({ className }) {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ export function ProjectsPage({ className }) {
 
       navigate(firstSlug, { replace: true });
     }
+    // addEmployeeToProject({ token });
   }, [projects, projectsLoading, slug, navigate]);
 
   const filteredProjects = projects.filter((projects) => {
@@ -162,11 +164,12 @@ export function ProjectsPage({ className }) {
               nextSlide={nextSlide}
               isLeftButtonDisabled={isLeftButtonDisabled}
               isRightButtonDisabled={isRightButtonDisabled}
+              className="mt-7"
             />
           )}
         </div>
 
-        <div className="flex flex-1 rounded-3xl bg-bgBlock">
+        <div className="flex flex-1 flex-col">
           {projects.length > 0 ? (
             <Outlet key={slug} />
           ) : (

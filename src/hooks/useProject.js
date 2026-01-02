@@ -40,5 +40,6 @@ export function useProject(id) {
     projectMembers,
     projectLoading,
     projectError,
+    projectMembersData,
   };
 }
