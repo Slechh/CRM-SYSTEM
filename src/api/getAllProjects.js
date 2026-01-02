@@ -1,5 +1,4 @@
 export async function getAllProjects({ token }) {
-  console.log(token)
   const response = await fetch(
     "http://localhost:8080/api/v1/analytics-projects/all",
     {

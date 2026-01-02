@@ -8,9 +8,10 @@ export function ProjectsSwitcher({
   nextSlide,
   isLeftButtonDisabled,
   isRightButtonDisabled,
+  className,
 }) {
   return (
-    <div className="mt-7 flex justify-end">
+    <div className={clsx("flex justify-end", className)}>
       {projectsListLength > 0 ? (
         <div className="bg-bgBlock px-5 py-3 rounded-2xl flex items-center">
           <span>

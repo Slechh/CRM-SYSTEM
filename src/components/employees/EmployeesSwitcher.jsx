@@ -1,5 +1,6 @@
 import { Icon } from "../Icon";
 import clsx from "clsx";
+
 export function EmployeesSwitcher({
   employeeStartIndex,
   employeeLastIndex,
