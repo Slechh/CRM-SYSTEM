@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAllProjects } from "../api/getAllProjects";
 import { addEmployeeToProject } from "../api/addEmployeeToProject";
+import { deleteProjectMember } from "../api/deleteProjectMember";
 
 export function useProjects() {
   const [projects, setProjects] = useState([]);
@@ -26,10 +27,22 @@ export function useProjects() {
       const token = sessionStorage.getItem("authToken");
       const result = await addEmployeeToProject({ token, data });
       console.log("Employee added:", result);
-      return result; 
+      return result;
     } catch (err) {
       console.error("Failed to add employee:", err.message);
-      throw err; 
+      throw err;
+    }
+  };
+
+  const deleteEmployee = async (idProject, idUser) => {
+    try {
+      const token = sessionStorage.getItem("authToken");
+      const result = await deleteProjectMember({ token, idProject, idUser });
+      console.log("Employee delete:", result);
+      return result;
+    } catch (err) {
+      console.error("Failed to delete employee:", err.message);
+      throw err;
     }
   };
 
@@ -43,5 +56,6 @@ export function useProjects() {
     projectsError,
     getProjects,
     addEmployee,
+    deleteEmployee,
   };
 }

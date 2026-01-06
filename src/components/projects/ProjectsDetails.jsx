@@ -9,11 +9,10 @@ import { Spinner } from "../Spinner";
 import { ProjectsSwitcher } from "./ProjectsSwitcher";
 import { useProjects } from "../../hooks/useProjects";
 
-
-
 export function ProjectDetails() {
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [addingUserIds, setAddingUserIds] = useState([]);
 
   const [inputValue, setInputValue] = useState("");
   const [filter, setFilter] = useState("");
@@ -29,7 +28,7 @@ export function ProjectDetails() {
     projectError,
     projectMembersData,
   } = useProject(projectId);
-  const { addEmployee } = useProjects();
+  const { addEmployee, deleteEmployee } = useProjects();
 
   const usersNotInProject = users.filter(
     (user) => !projectMembers.find((member) => member.expertId === user.id)
@@ -94,8 +93,23 @@ export function ProjectDetails() {
   };
 
   const handleAddEmployee = async (data) => {
+    if (addingUserIds.includes(data.expertId)) return;
+
     try {
+      setAddingUserIds((prev) => [...prev, data.expertId]);
+
       await addEmployee(data);
+      await projectMembersData();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setAddingUserIds((prev) => prev.filter((id) => id !== data.expertId));
+    }
+  };
+
+  const handleDeleteEmployee = async (idProject, idUser) => {
+    try {
+      await deleteEmployee(idProject, idUser);
       await projectMembersData();
     } catch (err) {
       console.error(err);
@@ -136,7 +150,7 @@ export function ProjectDetails() {
                 iconCn="bg-green-500"
                 onClick={handleAddEmployee}
                 projectId={projectId}
-                forKey={employeesList.id}
+                addingUserIds={addingUserIds}
               />
             </>
           )
@@ -146,7 +160,8 @@ export function ProjectDetails() {
               users={projectMembers}
               iconType="trash"
               iconCn="bg-red-500"
-              forKey={projectMembers.expertId}
+              onClick={handleDeleteEmployee}
+              projectId={projectId}
             />
           </div>
         ) : (
@@ -177,18 +192,19 @@ export function EmployeesList({
   iconCn,
   onClick,
   projectId,
-  forKey,
+  addingUserIds = [],
 }) {
   return users.length > 0 ? (
     <div className="grid grid-cols-4 gap-7 mt-[25px]">
       {users.map((expert) => (
         <ProjectsEmployee
-          key={forKey}
+          key={expert.id}
           expert={expert}
           iconType={iconType}
           iconCn={iconCn}
           handleAction={onClick}
           projectId={projectId}
+          disabled={addingUserIds.includes(expert.id)}
         />
       ))}
     </div>
