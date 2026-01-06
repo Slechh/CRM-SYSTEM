@@ -7,6 +7,7 @@ export function ProjectsEmployee({
   iconCn,
   handleAction,
   projectId,
+  disabled,
 }) {
   return (
     <div className="bg-bgApp rounded-3xl relative group">
@@ -21,20 +22,29 @@ export function ProjectsEmployee({
           <div>{expert.specialization || expert.role}</div>
         </div>
         <button
+          disabled={disabled}
           className={clsx(
-            "absolute top-1 right-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100 p-2 rounded-xl text-white",
+            "absolute top-1 right-1 transition-opacity duration-200 p-2 rounded-xl text-white",
+            disabled
+              ? "opacity-50 cursor-not-allowed"
+              : "opacity-0 group-hover:opacity-100",
             iconCn
           )}
-          onClick={() =>
-            handleAction({
-              expertId: expert.id,
-              projectId: Number(projectId),
-              role: expert.specialization,
-              responsibilities: "Do some tasks",
-              allocationPercentage: 100,
-              joinedDate: "2021-11-25",
-            })
-          }
+          onClick={() => {
+            if (iconType === "plus") {
+              handleAction({
+                expertId: expert.id,
+                projectId: Number(projectId),
+                role: expert.specialization,
+                responsibilities: "Do some tasks",
+                allocationPercentage: 100,
+                joinedDate: "2021-11-25",
+              });
+            }
+            if (iconType === "trash") {
+              handleAction(Number(projectId), expert.expertId);
+            }
+          }}
         >
           <Icon id={iconType} className="w-5 h-5" />
         </button>
