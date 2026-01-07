@@ -94,7 +94,7 @@ export function AnalyticsPage() {
       return acc;
     }, {});
 
-    if (chartType === "bar") {
+    if (chartType === "bar" || chartType === "horizontalBar") {
       const dataPoint = { name: "Роли" };
       Object.entries(roleCount).forEach(([role, count]) => {
         dataPoint[role] = count;
@@ -125,74 +125,111 @@ export function AnalyticsPage() {
     );
   }
 
+  const renderChart = () => {
+    if (!membersLoading && projectMembers.length === 0) {
+      return (
+        <div className="flex items-center justify-center w-full h-[300px]">
+          <div className="text-xl text-gray-400">
+            No employees on this project
+          </div>
+        </div>
+      );
+    }
+
+    if (chartType === "bar") {
+      return (
+        <BarChart width={500} height={300} data={chartData} barSize={100}>
+          <XAxis dataKey="name" />
+          <YAxis allowDecimals={false} />
+          <Tooltip
+            cursor={{ fill: "rgba(0, 0, 0, 0.1)" }}
+            position={{ x: 500, y: 0 }}
+          />
+          <Legend />
+          {roles.map((role, index) => (
+            <Bar
+              key={role}
+              dataKey={role}
+              fill={ROLE_COLORS[index % ROLE_COLORS.length]}
+            />
+          ))}
+        </BarChart>
+      );
+    }
+
+    if (chartType === "horizontalBar") {
+      return (
+        <BarChart
+          width={500}
+          height={300}
+          data={chartData}
+          layout="vertical"
+          barSize={40}
+        >
+          <XAxis type="number" allowDecimals={false} />
+          <YAxis type="category" dataKey="name" width={100} />
+          <Tooltip
+            cursor={{ fill: "rgba(0, 0, 0, 0.1)" }}
+            position={{ x: 500, y: 0 }}
+          />
+          <Legend />
+          {roles.map((role, index) => (
+            <Bar
+              key={role}
+              dataKey={role}
+              fill={ROLE_COLORS[index % ROLE_COLORS.length]}
+            />
+          ))}
+        </BarChart>
+      );
+    }
+
+    return (
+      <div className="w-[500px] h-[300px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              data={chartData}
+              cx="50%"
+              cy="50%"
+              labelLine={false}
+              label={false}
+              outerRadius={120}
+              fill="#8884d8"
+              dataKey="value"
+            >
+              {chartData.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={ROLE_COLORS[index % ROLE_COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend
+              layout="vertical"
+              align="right"
+              verticalAlign="middle"
+              formatter={(value, entry) => `${value} (${entry.payload.value})`}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+    );
+  };
+
   return (
     <div className="flex-1 mt-7">
       <h1 className="text-4xl font-bold">Analytics</h1>
 
       <div className="flex justify-between bg-bgBlock rounded-3xl mt-5 p-6">
-        {!membersLoading && projectMembers.length === 0 ? (
-          <div className="flex items-center justify-center w-full h-[300px]">
-            <div className="text-xl text-gray-400">
-              No employees on this project
-            </div>
-          </div>
-        ) : chartType === "bar" ? (
-          <BarChart width={500} height={300} data={chartData} barSize={100}>
-            <XAxis dataKey="name" />
-            <YAxis allowDecimals={false} />
-            <Tooltip
-              cursor={{ fill: "rgba(0, 0, 0, 0.1)" }}
-              position={{ x: 500, y: 0 }}
-            />
-            <Legend />
-            {roles.map((role, index) => (
-              <Bar
-                key={role}
-                dataKey={role}
-                fill={ROLE_COLORS[index % ROLE_COLORS.length]}
-              />
-            ))}
-          </BarChart>
-        ) : (
-          <div className="w-[500px] h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={chartData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={false}
-                  outerRadius={120}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {chartData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={ROLE_COLORS[index % ROLE_COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend
-                  layout="vertical"
-                  align="right"
-                  verticalAlign="middle"
-                  formatter={(value, entry) =>
-                    `${value} (${entry.payload.value})`
-                  }
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        )}
+        {renderChart()}
 
-        <div className="flex flex-col gap-3 ">
+        <div className="flex flex-col gap-3">
           <div className="flex gap-10">
             <div className="flex flex-col gap-2">
               {actualSelectedProject && (
-                <div className="text-xl font-bold ml-1.5 ">Выбран проект:</div>
+                <div className="text-xl font-bold ml-1.5">Выбран проект:</div>
               )}
               <AnalyticsSelect
                 projects={projects}
@@ -204,7 +241,7 @@ export function AnalyticsPage() {
               ""
             ) : (
               <div className="flex flex-col gap-2">
-                <div className="text-xl font-bold ml-1.5 ">Тип графика:</div>
+                <div className="text-xl font-bold ml-1.5">Тип графика:</div>
                 <AnalyticsTypeSelect
                   selected={chartType}
                   onSelect={setChartType}

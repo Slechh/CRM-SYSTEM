@@ -3,6 +3,7 @@ import { useState } from "react";
 const CHART_TYPES = [
   { value: "bar", label: "Bar Chart" },
   { value: "pie", label: "Pie Chart" },
+  { value: "horizontalBar", label: "Horizontal Bar Chart" },
 ];
 
 export function AnalyticsTypeSelect({ selected, onSelect }) {
