@@ -7,14 +7,14 @@ export function UiForm({
   children,
   className,
   onSuccess,
-  onError, 
+  onError,
   label,
   isDisabled,
   create,
 }) {
   const token = sessionStorage.getItem("authToken");
   const [message, setMessage] = useState("");
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -24,13 +24,16 @@ export function UiForm({
       });
 
       handleReset?.();
-      onSuccess?.();
+
+      if (onSuccess) {
+        await onSuccess(); // ← ДОБАВЛЕН await
+      }
     } catch (error) {
       setMessage(error.message);
-      onError?.(error); 
+      onError?.(error);
     }
   };
-  
+
   return (
     <form onSubmit={handleSubmit} className={className}>
       {children}
@@ -39,7 +42,7 @@ export function UiForm({
           <span>Create {label}</span>
         </UiButton>
       </div>
-      {message && <p>{message}</p>}
+      {message && <p className="text-red-500 text-sm mt-2">{message}</p>}
     </form>
   );
 }

@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { ProjectsSwitcher } from "../components/projects/ProjectsSwitcher";
 import { UiDeleteModal } from "../uikit/UiDeleteModal";
 import { deleteProject } from "../api/deleteProject";
+import { Toast } from "../components/Toast";
 
 export function ProjectsPage({ className }) {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ export function ProjectsPage({ className }) {
   const [filter, setFilter] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
+  const [toast, setToast] = useState(null);
 
   const { projects, projectsLoading, projectsError, getProjects } =
     useProjects();
@@ -60,6 +62,13 @@ export function ProjectsPage({ className }) {
   const isLeftButtonDisabled = currentPage === 1;
   const isRightButtonDisabled = currentPage === totalPages;
 
+  // Проверяем, если текущая страница стала пустой после удаления
+  useEffect(() => {
+    if (projectList.length === 0 && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  }, [projectList.length, currentPage]);
+
   const handleClick = () => {
     handleSearch(inputValue);
   };
@@ -91,23 +100,68 @@ export function ProjectsPage({ className }) {
   const handleDelete = async () => {
     if (!projectToDelete) return;
 
-    await deleteProject({ token, projectId: projectToDelete.id });
+    try {
+      await deleteProject({ token, projectId: projectToDelete.id });
 
-    const updatedProjects = await getProjects();
+      const updatedProjects = await getProjects();
 
-    setIsModalOpen(false);
-    setProjectToDelete(null);
+      setIsModalOpen(false);
+      setProjectToDelete(null);
 
-    if (updatedProjects?.length > 0) {
-      const first = updatedProjects[0];
-      const firstSlug = `${first.projectName
-        .toLowerCase()
-        .replace(/\s+/g, "-")}-${first.id}`;
+      setToast({ message: "Project deleted successfully!", type: "success" });
 
-      navigate(`/projects/${firstSlug}`, { replace: true });
-    } else {
-      navigate("/projects", { replace: true });
+      // Проверяем, есть ли проекты после удаления
+      if (updatedProjects?.length > 0) {
+        // Вычисляем на какой странице мы окажемся после удаления
+        const newTotalPages = Math.ceil(updatedProjects.length / itemsPerPage);
+        const targetPage =
+          currentPage > newTotalPages ? newTotalPages : currentPage;
+
+        // Вычисляем индексы для целевой страницы
+        const targetStartIndex = (targetPage - 1) * itemsPerPage;
+        const targetEndIndex = Math.min(
+          targetPage * itemsPerPage,
+          updatedProjects.length
+        );
+
+        // Получаем проекты на целевой странице
+        const projectsOnTargetPage = updatedProjects.slice(
+          targetStartIndex,
+          targetEndIndex
+        );
+
+        if (projectsOnTargetPage.length > 0) {
+          // Берем первый проект на целевой странице
+          const targetProject = projectsOnTargetPage[0];
+          const targetSlug = `${targetProject.projectName
+            .toLowerCase()
+            .replace(/\s+/g, "-")}-${targetProject.id}`;
+
+          navigate(`/projects/${targetSlug}`, { replace: true });
+        }
+      } else {
+        navigate("/projects", { replace: true });
+      }
+    } catch (error) {
+      setIsModalOpen(false);
+      setProjectToDelete(null);
+      setToast({
+        message: error.message || "Failed to delete project",
+        type: "error",
+      });
     }
+  };
+
+  const handleProjectCreated = async () => {
+    await getProjects();
+    setToast({ message: "Project created successfully!", type: "success" });
+  };
+
+  const handleProjectCreateError = (error) => {
+    setToast({
+      message: error.message || "Failed to create project",
+      type: "error",
+    });
   };
 
   if (projectsLoading) {
@@ -119,73 +173,86 @@ export function ProjectsPage({ className }) {
   }
 
   return (
-    <div className={clsx(className, "flex flex-col flex-1")}>
-      <ProjectsHeader getProjects={getProjects} />
-      <div className="flex mt-7 gap-8 flex-1">
-        <div className="flex flex-col gap-2 self-start">
-          <UiPanel className="pt-7 pb-3">
-            <h2 className="font-bold px-6">All Projects</h2>
-            <div className="px-4 mt-2">
-              <div className="w-full bg-bgBlock px-5 py-3 rounded-2xl border border-solid border-cardText">
-                <div className="flex items-center">
-                  <input
-                    type="text"
-                    value={inputValue}
-                    placeholder="Search"
-                    className="bg-transparent w-full outline-none mr-4"
-                    onChange={(e) => setInputValue(e.target.value)}
-                  />
-                  <button className="ml-5" onClick={handleClick}>
-                    <Icon id="search" className="w-6 h-6" />
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="w-full h-px bg-bgLine mt-4 mb-2"></div>
-            {projectList.length > 0 ? (
-              <ProjectsList
-                projects={projectList}
-                onDeleteClick={handleOpenModal}
-              />
-            ) : (
-              <p className="text-cardText text-center py-4">
-                No projects found
-              </p>
-            )}
-          </UiPanel>
-          {projectList.length > 0 && (
-            <ProjectsSwitcher
-              projectsStartIndex={projectsStartIndex}
-              projectsLastIndex={projectsLastIndex}
-              projectsListLength={projectsListLength}
-              previousSlide={previousSlide}
-              nextSlide={nextSlide}
-              isLeftButtonDisabled={isLeftButtonDisabled}
-              isRightButtonDisabled={isRightButtonDisabled}
-              className="mt-7"
-            />
-          )}
-        </div>
-
-        <div className="flex flex-1 flex-col">
-          {projects.length > 0 ? (
-            <Outlet key={slug} />
-          ) : (
-            <div className="flex items-center justify-center flex-1">
-              <p className="text-cardText">No projects available</p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {isModalOpen && projectToDelete && (
-        <UiDeleteModal
-          label="Project"
-          userName={projectToDelete.projectName}
-          handleCloseModal={handleCloseModal}
-          onDelete={handleDelete}
+    <>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
         />
       )}
-    </div>
+
+      <div className={clsx(className, "flex flex-col flex-1")}>
+        <ProjectsHeader
+          getProjects={handleProjectCreated}
+          onError={handleProjectCreateError}
+        />
+        <div className="flex mt-7 gap-8 flex-1">
+          <div className="flex flex-col gap-2 self-start">
+            <UiPanel className="pt-7 pb-3">
+              <h2 className="font-bold px-6">All Projects</h2>
+              <div className="px-4 mt-2">
+                <div className="w-full bg-bgBlock px-5 py-3 rounded-2xl border border-solid border-cardText">
+                  <div className="flex items-center">
+                    <input
+                      type="text"
+                      value={inputValue}
+                      placeholder="Search"
+                      className="bg-transparent w-full outline-none mr-4"
+                      onChange={(e) => setInputValue(e.target.value)}
+                    />
+                    <button className="ml-5" onClick={handleClick}>
+                      <Icon id="search" className="w-6 h-6" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="w-full h-px bg-bgLine mt-4 mb-2"></div>
+              {projectList.length > 0 ? (
+                <ProjectsList
+                  projects={projectList}
+                  onDeleteClick={handleOpenModal}
+                />
+              ) : (
+                <p className="text-cardText text-center py-4">
+                  No projects found
+                </p>
+              )}
+            </UiPanel>
+            {projectList.length > 0 && (
+              <ProjectsSwitcher
+                projectsStartIndex={projectsStartIndex}
+                projectsLastIndex={projectsLastIndex}
+                projectsListLength={projectsListLength}
+                previousSlide={previousSlide}
+                nextSlide={nextSlide}
+                isLeftButtonDisabled={isLeftButtonDisabled}
+                isRightButtonDisabled={isRightButtonDisabled}
+                className="mt-7"
+              />
+            )}
+          </div>
+
+          <div className="flex flex-1 flex-col">
+            {projects.length > 0 ? (
+              <Outlet key={slug} />
+            ) : (
+              <div className="flex items-center justify-center flex-1">
+                <p className="text-cardText">No projects available</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {isModalOpen && projectToDelete && (
+          <UiDeleteModal
+            label="Project"
+            userName={projectToDelete.projectName}
+            handleCloseModal={handleCloseModal}
+            onDelete={handleDelete}
+          />
+        )}
+      </div>
+    </>
   );
 }

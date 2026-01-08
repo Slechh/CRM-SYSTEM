@@ -6,14 +6,9 @@ import { useProjectsForm } from "../../hooks/useProjectsForm";
 import { createProject } from "../../api/createProject";
 import { jwtDecode } from "jwt-decode";
 
-export function ProjectsAddForm({ handleClose, getProjects }) {
+export function ProjectsAddForm({ handleClose, onSuccess, onError }) {
   const token = sessionStorage.getItem("authToken");
   const user = jwtDecode(token);
-
-  const onSuccess = async () => {
-    await getProjects();
-    handleClose();
-  };
 
   const {
     data: projectData,
@@ -31,7 +26,6 @@ export function ProjectsAddForm({ handleClose, getProjects }) {
     createdByUserId: Number(user.sub),
   });
 
-
   return (
     <UiCreateModal
       label="Project"
@@ -44,6 +38,7 @@ export function ProjectsAddForm({ handleClose, getProjects }) {
           formData={projectData}
           handleReset={handleReset}
           onSuccess={onSuccess}
+          onError={onError}
           className="mt-6"
           label="Project"
           isDisabled={!isValid}
