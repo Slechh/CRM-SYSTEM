@@ -14,7 +14,6 @@ import { Layout } from "../layouts/layout.jsx";
 import { ProtectedRoute } from "./protectedRoute.jsx";
 
 import { OverviewTab } from "../tabs/overview/OverviewTab.jsx";
-import { CvTab } from "../tabs/overview/CvTab.jsx";
 import { AttachmentTab } from "../tabs/overview/AttachmentTab.jsx";
 
 const router = createBrowserRouter([
@@ -61,10 +60,6 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <OverviewTab />,
-              },
-              {
-                path: "cv",
-                element: <CvTab />,
               },
               {
                 path: "attachment",

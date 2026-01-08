@@ -18,17 +18,17 @@ export function OverviewHeader({ userInfo }) {
         />
         <div className="flex flex-col test-sm font-bold">
           <h2>
-            {userInfo.firstName} {userInfo.lastName}
+            {userInfo?.firstName} {userInfo?.lastName}
           </h2>
           <h2>
-            {userInfo.country} / {userInfo.city}
+            {userInfo?.country} / {userInfo?.city}
           </h2>
         </div>
       </div>
       <div className="w-full h-px bg-bgLine absolute right-0 top-[97.5px]"></div>
       <div className="flex flex-col gap-1.5 mt-4 mb-7">
         <h2 className="text-xl font-bold">Specialization</h2>
-        <p className="text-sm font-semibold">{userInfo.expertSpecialization}</p>
+        <p className="text-sm font-semibold">{userInfo?.expertSpecialization}</p>
       </div>
 
       <div className="flex items-center justify-center">

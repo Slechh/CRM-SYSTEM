@@ -15,9 +15,11 @@ import {
 } from "../../constants/overviewInputs";
 import { UiSelect } from "../../uikit/UiSelect";
 import { useAuth } from "../../hooks/useAuth";
+import { Toast } from "../../components/Toast";
 
 export function OverviewTab() {
   const [isRightBtnClicked, setIsRightBtnClicked] = useState(false);
+  const [toast, setToast] = useState(null);
   const { register, handleSubmit, setValue, control } = useForm();
   const { userInfo, setUserInfo } = useOutletContext();
   const { hasRole } = useAuth();
@@ -56,7 +58,7 @@ export function OverviewTab() {
     setIsRightBtnClicked((prev) => !prev);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const {
       expertId,
       createdAt,
@@ -95,12 +97,23 @@ export function OverviewTab() {
     };
 
     console.log("TRANSFORMED DATA:", expertData);
-    setIsRightBtnClicked(false);
 
-    updateExpert({ token, expertData, expertId }).then((data) => {
-      console.log("SERVER RESPONSE:", data);
-      setUserInfo(data);
-    });
+    try {
+      const updatedData = await updateExpert({ token, expertData, expertId });
+      console.log("SERVER RESPONSE:", updatedData);
+      setUserInfo(updatedData);
+      setIsRightBtnClicked(false);
+      setToast({
+        message: "Employee data updated successfully!",
+        type: "success",
+      });
+    } catch (error) {
+      console.error("Ошибка при обновлении данных:", error);
+      setToast({
+        message: "Failed to update employee data",
+        type: "error",
+      });
+    }
   };
 
   const editButton = canEditEmployee ? (
@@ -132,6 +145,14 @@ export function OverviewTab() {
 
   return (
     <>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="relative flex flex-col gap-[20px]">
           <UiFieldSet
