@@ -19,6 +19,11 @@ export function EmployeeCard({ user, onDelete }) {
     setIsModalOpen(false);
   };
 
+  const handleDelete = () => {
+    handleClose();
+    onDelete(userIdString);
+  };
+
   const canDeleteEmployee = hasRole(["CEO", "RECRUITER"]);
 
   return (
@@ -83,7 +88,7 @@ export function EmployeeCard({ user, onDelete }) {
           handleCloseModal={handleClose}
           userName={userName}
           fetchDeleteExpert={fetchDeleteExpert}
-          onDelete={() => onDelete(userIdString)}
+          onDelete={handleDelete}
         />
       )}
     </>

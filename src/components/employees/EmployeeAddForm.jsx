@@ -2,15 +2,12 @@ import { UiCreateModal } from "../../uikit/UiCreateModal";
 import { UiForm } from "../../uikit/UiForm";
 import { UiInput } from "../../uikit/UiInput";
 import { UiSelect } from "../../uikit/UiSelect";
-
 import { EMPLOYEE_INPUT_INFO } from "../../constants/employeeInput";
-
 import { useEmployeeForm } from "../../hooks/useEmployeeForm";
 import { useSpecializations } from "../../hooks/useSpecializations";
-
 import { createExpert } from "../../api/createExpert";
 
-export function EmployeeAddForm({ isModalClose, onSuccess }) {
+export function EmployeeAddForm({ isModalClose, onSuccess, onError }) {
   const {
     data: employeeData,
     handleChange,
@@ -39,6 +36,7 @@ export function EmployeeAddForm({ isModalClose, onSuccess }) {
           formData={employeeData}
           handleReset={handleReset}
           onSuccess={onSuccess}
+          onError={onError}
           className="mt-6"
           label="Employee"
           isDisabled={!isValid}
