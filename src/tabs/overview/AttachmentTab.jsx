@@ -5,11 +5,13 @@ import { uploadFiles } from "../../api/uploadFile";
 import { getFiles } from "../../api/getFile";
 import { fetchDeleteExpert } from "../../api/deleteFile";
 import { useAuth } from "../../hooks/useAuth";
+import { Toast } from "../../components/Toast";
 
 export function AttachmentTab() {
   const [previews, setPreviews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [toast, setToast] = useState(null);
   const { userInfo } = useOutletContext();
   const { hasRole } = useAuth();
   const userId = userInfo.expertId;
@@ -66,8 +68,20 @@ export function AttachmentTab() {
         fileUrl: file.fileUrl,
       }));
       setPreviews(serverPreviews);
+
+      setToast({
+        message:
+          files.length > 1
+            ? "Files uploaded successfully!"
+            : "File uploaded successfully!",
+        type: "success",
+      });
     } catch (error) {
       console.error("Ошибка при загрузке:", error);
+      setToast({
+        message: error.message || "Failed to upload files",
+        type: "error",
+      });
     }
   };
 
@@ -76,8 +90,14 @@ export function AttachmentTab() {
       await fetchDeleteExpert({ token, fileId });
       setPreviews((prev) => prev.filter((_, i) => i !== index));
       console.log("Файл успешно удален");
+
+      setToast({ message: "File deleted successfully!", type: "success" });
     } catch (error) {
       console.error("Ошибка при удалении файла:", error);
+      setToast({
+        message: error.message || "Failed to delete file",
+        type: "error",
+      });
     }
   };
 
@@ -99,73 +119,83 @@ export function AttachmentTab() {
   }
 
   return (
-    <div className="flex flex-col">
-      <div className="flex items-center justify-center">
-        <h2 className="text-xl font-bold">Attachment</h2>
-      </div>
+    <>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
 
-      {previews.length === 0 && !canManageAttachments ? (
-        <div className="flex items-center justify-center h-[200px]">
-          <p className="text-xl text-gray-400">No images yet</p>
+      <div className="flex flex-col">
+        <div className="flex items-center justify-center">
+          <h2 className="text-xl font-bold">Attachment</h2>
         </div>
-      ) : (
-        <ul className="grid grid-cols-4 gap-7 mt-5">
-          {previews.map((item, index) => (
-            <li
-              key={index}
-              className="relative"
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-            >
-              {item.isLocal ? (
-                <img
-                  src={item.url}
-                  alt="Preview"
-                  className="h-[180px] w-full object-cover rounded-2xl"
-                />
-              ) : (
-                <div className="h-[180px] w-full flex items-center justify-center bg-bgApp text-white rounded-2xl">
-                  <span className="font-bold text-black">
-                    {item.fileName.slice(0, 20) || "File"}
-                  </span>
-                </div>
-              )}
 
-              {hoveredIndex === index &&
-                !item.isLocal &&
-                canManageAttachments && (
-                  <div className="absolute top-2 right-2">
-                    <button
-                      onClick={() => handleDelete(item.fileId, index)}
-                      className="w-8 h-8 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white shadow-lg transition-all"
-                      title="Delete"
-                    >
-                      <Icon id="close" className="w-4 h-4" />
-                    </button>
+        {previews.length === 0 && !canManageAttachments ? (
+          <div className="flex items-center justify-center h-[200px]">
+            <p className="text-xl text-gray-400">No images yet</p>
+          </div>
+        ) : (
+          <ul className="grid grid-cols-4 gap-7 mt-5">
+            {previews.map((item, index) => (
+              <li
+                key={index}
+                className="relative"
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                {item.isLocal ? (
+                  <img
+                    src={item.url}
+                    alt="Preview"
+                    className="h-[180px] w-full object-cover rounded-2xl"
+                  />
+                ) : (
+                  <div className="h-[180px] w-full flex items-center justify-center bg-bgApp text-white rounded-2xl">
+                    <span className="font-bold text-black">
+                      {item.fileName.slice(0, 20) || "File"}
+                    </span>
                   </div>
                 )}
-            </li>
-          ))}
 
-          {canManageAttachments && (
-            <li>
-              <div className="h-[180px] w-full">
-                <label className="flex flex-col h-full items-center justify-center cursor-pointer px-4 py-2 bg-bgApp text-white rounded-2xl hover:bg-opacity-80 transition-all">
-                  <Icon id="plus" className="w-[65px] text-bgSvg" />
-                  <span className="text-black">Add Attachment</span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleChange}
-                    multiple
-                  />
-                </label>
-              </div>
-            </li>
-          )}
-        </ul>
-      )}
-    </div>
+                {hoveredIndex === index &&
+                  !item.isLocal &&
+                  canManageAttachments && (
+                    <div className="absolute top-2 right-2">
+                      <button
+                        onClick={() => handleDelete(item.fileId, index)}
+                        className="w-8 h-8 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white shadow-lg transition-all"
+                        title="Delete"
+                      >
+                        <Icon id="close" className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
+              </li>
+            ))}
+
+            {canManageAttachments && (
+              <li>
+                <div className="h-[180px] w-full">
+                  <label className="flex flex-col h-full items-center justify-center cursor-pointer px-4 py-2 bg-bgApp text-white rounded-2xl hover:bg-opacity-80 transition-all">
+                    <Icon id="plus" className="w-[65px] text-bgSvg" />
+                    <span className="text-black">Add Attachment</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleChange}
+                      multiple
+                    />
+                  </label>
+                </div>
+              </li>
+            )}
+          </ul>
+        )}
+      </div>
+    </>
   );
 }
