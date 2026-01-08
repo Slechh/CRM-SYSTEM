@@ -8,11 +8,13 @@ import { useExperts } from "../../hooks/useExperts";
 import { Spinner } from "../Spinner";
 import { ProjectsSwitcher } from "./ProjectsSwitcher";
 import { useProjects } from "../../hooks/useProjects";
+import { Toast } from "../Toast";
 
 export function ProjectDetails() {
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [addingUserIds, setAddingUserIds] = useState([]);
+  const [toast, setToast] = useState(null);
 
   const [inputValue, setInputValue] = useState("");
   const [filter, setFilter] = useState("");
@@ -100,8 +102,17 @@ export function ProjectDetails() {
 
       await addEmployee(data);
       await projectMembersData();
+
+      setToast({
+        message: "Employee added to project successfully!",
+        type: "success",
+      });
     } catch (err) {
       console.error(err);
+      setToast({
+        message: err.message || "Failed to add employee",
+        type: "error",
+      });
     } finally {
       setAddingUserIds((prev) => prev.filter((id) => id !== data.expertId));
     }
@@ -111,14 +122,30 @@ export function ProjectDetails() {
     try {
       await deleteEmployee(idProject, idUser);
       await projectMembersData();
+
+      setToast({
+        message: "Employee removed from project successfully!",
+        type: "success",
+      });
     } catch (err) {
       console.error(err);
+      setToast({
+        message: err.message || "Failed to remove employee",
+        type: "error",
+      });
     }
   };
 
   return (
     <>
-      {" "}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+
       <div className="p-6 flex flex-col bg-bgBlock rounded-3xl">
         <DetailsHeader
           project={project}
