@@ -12,8 +12,9 @@ export function Layout() {
   const { user } = useAuth();
   const userRole = sessionStorage.getItem("userRole");
   const pagesWithoutAnalytics = NAVITEMS.filter(
-    (pages) => pages.to !== "/analytics"
+    (pages) => pages.to !== "/analytics" && pages.to !== "/projects"
   );
+  console.log(pagesWithoutAnalytics);
   const pagesToRender = userRole === "CEO" ? NAVITEMS : pagesWithoutAnalytics;
 
   return (

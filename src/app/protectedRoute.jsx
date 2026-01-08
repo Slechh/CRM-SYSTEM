@@ -10,7 +10,7 @@ export function ProtectedRoute({ allowedRoles }) {
   }
 
   if (allowedRoles && !allowedRoles.includes(userRole)) {
-    return <Navigate to="error" />;
+    return <Navigate to="/*" />;
   }
 
   return <Outlet />;
