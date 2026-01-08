@@ -14,11 +14,13 @@ import {
   SPECIALIZATIONS,
 } from "../../constants/overviewInputs";
 import { UiSelect } from "../../uikit/UiSelect";
+import { useAuth } from "../../hooks/useAuth";
 
 export function OverviewTab() {
   const [isRightBtnClicked, setIsRightBtnClicked] = useState(false);
   const { register, handleSubmit, setValue, control } = useForm();
   const { userInfo, setUserInfo } = useOutletContext();
+  const { hasRole } = useAuth();
   const token = sessionStorage.getItem("authToken");
 
   const technologies = useWatch({
@@ -38,6 +40,8 @@ export function OverviewTab() {
     defaultValue: "",
   });
 
+  const canEditEmployee = hasRole(["CEO", "RECRUITER"]);
+
   useEffect(() => {
     if (!userInfo) return;
 
@@ -47,6 +51,7 @@ export function OverviewTab() {
       }
     });
   }, [userInfo, setValue]);
+
   const changeMode = () => {
     setIsRightBtnClicked((prev) => !prev);
   };
@@ -98,7 +103,7 @@ export function OverviewTab() {
     });
   };
 
-  const editButton = (
+  const editButton = canEditEmployee ? (
     <button
       type="button"
       className="flex items-center gap-1 text-bgNavBlock"
@@ -113,16 +118,17 @@ export function OverviewTab() {
         </>
       )}
     </button>
-  );
-
-  const saveButton = isRightBtnClicked ? (
-    <button
-      type="submit"
-      className="px-4 py-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-    >
-      Save Changes
-    </button>
   ) : null;
+
+  const saveButton =
+    isRightBtnClicked && canEditEmployee ? (
+      <button
+        type="submit"
+        className="px-4 py-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+      >
+        Save Changes
+      </button>
+    ) : null;
 
   return (
     <>

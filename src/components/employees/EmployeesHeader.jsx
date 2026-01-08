@@ -2,9 +2,12 @@ import { useState } from "react";
 import { UiButton } from "../../uikit/UiButton";
 import { Icon } from "../Icon";
 import { EmployeeAddForm } from "./EmployeeAddForm";
+import { useAuth } from "../../hooks/useAuth";
 
 export function EmployeesHeader({ users, onEmployeeCreated }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { hasRole } = useAuth();
+
   const handleOpen = () => {
     setIsModalOpen(true);
   };
@@ -12,6 +15,8 @@ export function EmployeesHeader({ users, onEmployeeCreated }) {
   const handleClose = () => {
     setIsModalOpen(false);
   };
+
+  const canAddEmployee = hasRole(["CEO", "RECRUITER"]);
 
   return (
     <div className="flex font-bold justify-between items-center">
@@ -23,15 +28,19 @@ export function EmployeesHeader({ users, onEmployeeCreated }) {
         <UiButton size="xs" type="normal" className="text-black">
           <Icon id="filter" className="w-5 h-5" />
         </UiButton>
-        <UiButton
-          size="lg"
-          className="gap-2 text-bgBlock"
-          type="big"
-          onClick={() => handleOpen()}
-        >
-          <Icon id="plus" className="w-3 h-3" />
-          <span>Add Employee</span>
-        </UiButton>
+
+        {canAddEmployee && (
+          <UiButton
+            size="lg"
+            className="gap-2 text-bgBlock"
+            type="big"
+            onClick={() => handleOpen()}
+          >
+            <Icon id="plus" className="w-3 h-3" />
+            <span>Add Employee</span>
+          </UiButton>
+        )}
+
         {isModalOpen && (
           <EmployeeAddForm
             isModalClose={handleClose}

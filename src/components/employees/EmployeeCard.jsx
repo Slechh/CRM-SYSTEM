@@ -3,11 +3,14 @@ import { Icon } from "../Icon";
 import { UiDeleteModal } from "../../uikit/UiDeleteModal";
 import { fetchDeleteExpert } from "../../api/deleteExperts";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 export function EmployeeCard({ user, onDelete }) {
   const userIdString = String(user.id);
   const userName = `${user.firstName} ${user.lastName}`;
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { hasRole } = useAuth();
+
   const handleOpen = () => {
     setIsModalOpen(true);
   };
@@ -16,12 +19,17 @@ export function EmployeeCard({ user, onDelete }) {
     setIsModalOpen(false);
   };
 
+  const canDeleteEmployee = hasRole(["CEO", "RECRUITER"]);
+
   return (
     <>
       <NavLink to={`/overview/${user.id}`} className="no-underline">
         <div
-          className="h-[86px] bg-bgBlock rounded-3xl py-5 px-7 items-center grid 
-    grid-cols-[minmax(400px,1fr)_minmax(80px,1fr)_minmax(120px,1fr)_minmax(60px,1fr)_minmax(200px,1fr)_40px]"
+          className={`h-[86px] bg-bgBlock rounded-3xl py-5 px-7 items-center grid ${
+            canDeleteEmployee
+              ? "grid-cols-[minmax(400px,1fr)_minmax(80px,1fr)_minmax(120px,1fr)_minmax(60px,1fr)_minmax(200px,1fr)_40px]"
+              : "grid-cols-[minmax(400px,1fr)_minmax(80px,1fr)_minmax(120px,1fr)_minmax(60px,1fr)_minmax(200px,1fr)]"
+          }`}
         >
           <div className="flex gap-4">
             <img src="/images/photo.png" alt="" className="w-12 h-12" />
@@ -53,18 +61,20 @@ export function EmployeeCard({ user, onDelete }) {
             <span className="font-bold text-cardText">Status</span>
             <span className="text-sm font-bold">{user.status}</span>
           </div>
-          <div>
-            <button
-              className="flex flex-col bg-[rgba(244,249,253,1)] p-2.5 rounded-xl"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleOpen();
-              }}
-            >
-              <Icon id="trash" className="w-5 h-5 text-bgNavBlock" />
-            </button>
-          </div>
+          {canDeleteEmployee && (
+            <div>
+              <button
+                className="flex flex-col bg-[rgba(244,249,253,1)] p-2.5 rounded-xl"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleOpen();
+                }}
+              >
+                <Icon id="trash" className="w-5 h-5 text-bgNavBlock" />
+              </button>
+            </div>
+          )}
         </div>
       </NavLink>
       {isModalOpen && (
