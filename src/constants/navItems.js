@@ -10,11 +10,6 @@ export const NAVITEMS = [
     label: "Projects",
   },
   {
-    to: "/vacations",
-    icon: "vacations",
-    label: "Vacations",
-  },
-  {
     to: "/employees",
     icon: "employees",
     label: "Employees",

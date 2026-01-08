@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { EmployeeCard } from "./EmployeeCard";
 import { EmployeesSearchForm } from "./EmployeesSearchForm";
 import { EmployeesSwitcher } from "./EmployeesSwitcher";
@@ -21,6 +21,13 @@ export function EmployeesList({ users, onEmployeeDelete, isLoading }) {
   const usersToRender = filter ? filteredUsers : users;
   const employeeListLength = usersToRender.length;
   const totalPages = Math.ceil(usersToRender.length / itemsPerPage);
+
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
   const employeeLastIndex = Math.min(
     currentPage * itemsPerPage,
     usersToRender.length

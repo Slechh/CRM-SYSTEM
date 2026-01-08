@@ -14,12 +14,18 @@ export function AttachmentTab() {
   const [toast, setToast] = useState(null);
   const { userInfo } = useOutletContext();
   const { hasRole } = useAuth();
-  const userId = userInfo.expertId;
+  const userId = userInfo?.expertId; // Добавлена проверка
   const token = sessionStorage.getItem("authToken");
 
   const canManageAttachments = hasRole(["CEO", "RECRUITER"]);
 
   useEffect(() => {
+    // Добавлена проверка перед запросом
+    if (!userId || !token) {
+      setIsLoading(false);
+      return;
+    }
+
     const fetchExistingFiles = async () => {
       setIsLoading(true);
       try {
@@ -34,6 +40,10 @@ export function AttachmentTab() {
         setPreviews(serverPreviews);
       } catch (error) {
         console.error("Ошибка при получении файлов:", error);
+        setToast({
+          message: "Failed to load files",
+          type: "error",
+        });
       } finally {
         setIsLoading(false);
       }
@@ -43,6 +53,11 @@ export function AttachmentTab() {
   }, [token, userId]);
 
   const handleChange = async (e) => {
+    if (!userId) {
+      setToast({ message: "User ID not found", type: "error" });
+      return;
+    }
+
     const files = Array.from(e.target.files);
     if (!files.length) return;
 
@@ -114,6 +129,22 @@ export function AttachmentTab() {
             </li>
           ))}
         </ul>
+      </div>
+    );
+  }
+
+  // Добавлена проверка на отсутствие userInfo
+  if (!userInfo || !userId) {
+    return (
+      <div className="flex flex-col">
+        <div className="flex items-center justify-center">
+          <h2 className="text-xl font-bold">Attachment</h2>
+        </div>
+        <div className="flex items-center justify-center h-[200px]">
+          <p className="text-xl text-gray-400">
+            User information not available
+          </p>
+        </div>
       </div>
     );
   }
