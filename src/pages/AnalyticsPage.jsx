@@ -220,7 +220,7 @@ export function AnalyticsPage() {
 
   return (
     <div className="flex-1 mt-7">
-      <h1 className="text-4xl font-bold">Analytics</h1>
+      <h1 className="text-4xl font-bold flex items-center">Analytics</h1>
 
       <div className="flex justify-between bg-bgBlock rounded-3xl mt-5 p-6">
         {renderChart()}

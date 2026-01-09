@@ -1,21 +1,27 @@
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { DashboardHeader } from "../components/dashboard/DashboardHeader";
+import { DashboardWorkload } from "../components/dashboard/DashboardWorkload";
+import { useExperts } from "../hooks/useExperts";
+import { Spinner } from "../components/Spinner";
+import { DashboardNearestEvents } from "../components/dashboard/DashboardNearestEvents";
+import { DashboardProjects } from "../components/dashboard/DashboardProjects";
 export function DashboardPage() {
+  const { users, loading } = useExperts();
 
-    const { register, handleSubmit } = useForm();
-
-    const onSubmit = (data) => {
-      console.log(data);
-      // тут дальше отправка на бек
-    };
-
-    return (
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input placeholder="Имя" {...register("firstName")} />
-
-        <input placeholder="Фамилия" {...register("lastName")} />
-
-        <button type="submit">Отправить</button>
-      </form>
-    );
+  if (loading) {
+    return <Spinner className="h-screen" />;
+  }
+  return (
+    <div className="flex-1 flex-col mt-7">
+      <DashboardHeader />
+      <div className="flex mt-7 flex-col gap-5">
+        <div className="flex gap-[40px]">
+          <DashboardWorkload users={users} />
+          <DashboardNearestEvents />
+        </div>
+        <div className="flex gap-[40px]">
+          <DashboardProjects />
+        </div>
+      </div>
+    </div>
+  );
 }

@@ -23,8 +23,7 @@ export function ProjectsPage({ className }) {
   const [projectToDelete, setProjectToDelete] = useState(null);
   const [toast, setToast] = useState(null);
 
-  const { projects, projectsLoading, projectsError, getProjects } =
-    useProjects();
+  const { projects, projectsLoading, getProjects } = useProjects();
   const token = sessionStorage.getItem("authToken");
 
   useEffect(() => {
@@ -62,7 +61,6 @@ export function ProjectsPage({ className }) {
   const isLeftButtonDisabled = currentPage === 1;
   const isRightButtonDisabled = currentPage === totalPages;
 
-  // Проверяем, если текущая страница стала пустой после удаления
   useEffect(() => {
     if (projectList.length === 0 && currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -110,28 +108,23 @@ export function ProjectsPage({ className }) {
 
       setToast({ message: "Project deleted successfully!", type: "success" });
 
-      // Проверяем, есть ли проекты после удаления
       if (updatedProjects?.length > 0) {
-        // Вычисляем на какой странице мы окажемся после удаления
         const newTotalPages = Math.ceil(updatedProjects.length / itemsPerPage);
         const targetPage =
           currentPage > newTotalPages ? newTotalPages : currentPage;
 
-        // Вычисляем индексы для целевой страницы
         const targetStartIndex = (targetPage - 1) * itemsPerPage;
         const targetEndIndex = Math.min(
           targetPage * itemsPerPage,
           updatedProjects.length
         );
 
-        // Получаем проекты на целевой странице
         const projectsOnTargetPage = updatedProjects.slice(
           targetStartIndex,
           targetEndIndex
         );
 
         if (projectsOnTargetPage.length > 0) {
-          // Берем первый проект на целевой странице
           const targetProject = projectsOnTargetPage[0];
           const targetSlug = `${targetProject.projectName
             .toLowerCase()

@@ -41,11 +41,6 @@ export function ProjectDetails() {
     return fullname.toLowerCase().includes(filter.toLowerCase());
   });
 
-  if (projectLoading) {
-    return (
-      <div className="w-full h-full bg-bgBlock rounded-3xl animate-pulse"></div>
-    );
-  }
 
   if (projectError) {
     return <div className="text-red-500">Error: {projectError}</div>;
