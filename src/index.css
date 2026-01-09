@@ -13,20 +13,22 @@
 body {
   background-color: var(--bg-app);
 }
-
 :root {
   --bg-app: #f4f9fd;
   --bg-block: #ffffff;
   --bg-nav-block: #3f8cff;
   --bg-modal: #d2defe;
   --bg-line: #e4e6e8;
-  --bg-svg: #C5CED7;
+  --bg-svg: #c5ced7;
   --user-text: #0a1629;
   --nav-text: #7d8592;
   --card-text: #91929e;
   --switcher-text: #9ccd1;
   --form-border: #d8e0f0;
-  --overview-switcher: #E6EDF5;
+  --overview-switcher: #e6edf5;
+  --event-1-color: #ffbd21;
+  --event-2-color: #0ac947;
+  --event-line-color: #de92eb;
 }
 
 input[type="search"]::-webkit-search-cancel-button {
