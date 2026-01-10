@@ -16,7 +16,7 @@ export const NAVITEMS = [
   },
   {
     to: "/analytics",
-    icon: "employees",
+    icon: "analytics",
     label: "Analytics",
   },
 ];

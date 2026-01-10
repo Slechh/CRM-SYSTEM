@@ -41,7 +41,6 @@ export function ProjectDetails() {
     return fullname.toLowerCase().includes(filter.toLowerCase());
   });
 
-
   if (projectError) {
     return <div className="text-red-500">Error: {projectError}</div>;
   }
@@ -176,6 +175,10 @@ export function ProjectDetails() {
               />
             </>
           )
+        ) : projectLoading ? (
+          <div className="flex flex-1 justify-center items-center min-h-[200px]">
+            <Spinner />
+          </div>
         ) : projectMembers.length > 0 ? (
           <div className="flex flex-1 justify-center items-center font-bold">
             <EmployeesList

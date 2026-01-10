@@ -4,9 +4,9 @@ import { templateUsers } from "../../constants/templateUsers";
 import { NavLink } from "react-router-dom";
 
 export function DashboardWorkload({ users }) {
-  const arrToShow = users.length > 8 ? users : templateUsers;
+  const arrToShow = users.length >= 12 ? users : templateUsers;
   return (
-    <div className="flex flex-col w-[1160px] bg-bgBlock rounded-3xl py-7 px-[18px]">
+    <div className="flex flex-col w-[1220px] bg-bgBlock rounded-3xl py-7 px-[18px]">
       <div className="flex justify-between">
         <h2 className="text-[22px] font-bold ml-3">Workload</h2>
         <NavLink to="/employees">
@@ -18,7 +18,7 @@ export function DashboardWorkload({ users }) {
       </div>
       <div className="flex flex-wrap gap-4 mt-5 ">
         {arrToShow.slice(0, 12).map((user) => (
-          <DashboardEmployeeCard users={user} />
+          <DashboardEmployeeCard users={user} key={user.id} />
         ))}
       </div>
     </div>

@@ -16,10 +16,10 @@ export function useProjects() {
       setProjectsLoading(true);
       const data = await getAllProjects({ token });
       setProjects(data);
-      return data; // ← ДОБАВЛЕНО
+      return data; 
     } catch (err) {
       setProjectsError(err.message);
-      return []; // ← ДОБАВЛЕНО
+      return []; 
     } finally {
       setProjectsLoading(false);
     }
